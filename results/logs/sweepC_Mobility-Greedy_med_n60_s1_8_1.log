@@ -1,0 +1,13 @@
+[Mobility-Greedy] round 1/55 acc=0.0992 cov=0.515 succ=114/136 (8s)
+[Mobility-Greedy] round 5/55 acc=0.1490 cov=0.838 succ=121/123 (32s)
+[Mobility-Greedy] round 10/55 acc=0.2625 cov=0.977 succ=111/130 (61s)
+[Mobility-Greedy] round 15/55 acc=0.3255 cov=1.000 succ=97/133 (90s)
+[Mobility-Greedy] round 20/55 acc=0.3539 cov=1.000 succ=107/111 (118s)
+[Mobility-Greedy] round 25/55 acc=0.3686 cov=1.000 succ=115/128 (148s)
+[Mobility-Greedy] round 30/55 acc=0.3832 cov=1.000 succ=132/138 (177s)
+[Mobility-Greedy] round 35/55 acc=0.3991 cov=1.000 succ=109/123 (207s)
+[Mobility-Greedy] round 40/55 acc=0.4083 cov=1.000 succ=128/147 (237s)
+[Mobility-Greedy] round 45/55 acc=0.4304 cov=1.000 succ=113/121 (266s)
+[Mobility-Greedy] round 50/55 acc=0.4509 cov=1.000 succ=120/127 (297s)
+[Mobility-Greedy] round 55/55 acc=0.4694 cov=1.000 succ=108/125 (328s)
+saved sweepC_Mobility-Greedy_med_n60_s1_R200_C8_V50_s1.json

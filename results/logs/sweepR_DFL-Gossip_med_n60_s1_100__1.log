@@ -1,0 +1,13 @@
+[DFL-Gossip] round 1/55 acc=0.1010 cov=0.515 succ=83/89 (9s)
+[DFL-Gossip] round 5/55 acc=0.1523 cov=0.708 succ=69/83 (33s)
+[DFL-Gossip] round 10/55 acc=0.2850 cov=0.892 succ=78/86 (63s)
+[DFL-Gossip] round 15/55 acc=0.3401 cov=0.985 succ=60/83 (93s)
+[DFL-Gossip] round 20/55 acc=0.3659 cov=0.992 succ=72/81 (135s)
+[DFL-Gossip] round 25/55 acc=0.3885 cov=0.992 succ=60/84 (179s)
+[DFL-Gossip] round 30/55 acc=0.3990 cov=1.000 succ=99/104 (217s)
+[DFL-Gossip] round 35/55 acc=0.4138 cov=1.000 succ=73/77 (249s)
+[DFL-Gossip] round 40/55 acc=0.4408 cov=1.000 succ=77/81 (286s)
+[DFL-Gossip] round 45/55 acc=0.4408 cov=1.000 succ=84/93 (322s)
+[DFL-Gossip] round 50/55 acc=0.4523 cov=1.000 succ=78/92 (355s)
+[DFL-Gossip] round 55/55 acc=0.4623 cov=1.000 succ=75/84 (388s)
+saved sweepR_DFL-Gossip_med_n60_s1_R100_C4_V50_s1.json

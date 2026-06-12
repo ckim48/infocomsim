@@ -1,0 +1,13 @@
+[DFL-Gossip] round 1/55 acc=0.1956 cov=0.640 succ=123/143 (8s)
+[DFL-Gossip] round 5/55 acc=0.4492 cov=0.956 succ=136/166 (31s)
+[DFL-Gossip] round 10/55 acc=0.5750 cov=1.000 succ=122/128 (59s)
+[DFL-Gossip] round 15/55 acc=0.6099 cov=1.000 succ=133/151 (87s)
+[DFL-Gossip] round 20/55 acc=0.6295 cov=1.000 succ=120/147 (115s)
+[DFL-Gossip] round 25/55 acc=0.6300 cov=1.000 succ=127/152 (143s)
+[DFL-Gossip] round 30/55 acc=0.6445 cov=1.000 succ=127/154 (171s)
+[DFL-Gossip] round 35/55 acc=0.6407 cov=1.000 succ=129/154 (198s)
+[DFL-Gossip] round 40/55 acc=0.6536 cov=1.000 succ=135/155 (226s)
+[DFL-Gossip] round 45/55 acc=0.6558 cov=1.000 succ=123/156 (254s)
+[DFL-Gossip] round 50/55 acc=0.6617 cov=1.000 succ=112/138 (281s)
+[DFL-Gossip] round 55/55 acc=0.6690 cov=1.000 succ=112/142 (309s)
+saved harmain_DFL-Gossip_med_n60_s3_R200_C4_V50_s3.json

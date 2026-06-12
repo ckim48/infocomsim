@@ -1,0 +1,13 @@
+[RECD] round 1/55 acc=0.0989 cov=0.262 succ=21/21 (7s)
+[RECD] round 5/55 acc=0.1705 cov=0.585 succ=19/19 (20s)
+[RECD] round 10/55 acc=0.2836 cov=0.846 succ=30/30 (36s)
+[RECD] round 15/55 acc=0.3421 cov=0.862 succ=19/30 (51s)
+[RECD] round 20/55 acc=0.3649 cov=0.923 succ=23/24 (66s)
+[RECD] round 25/55 acc=0.3849 cov=0.954 succ=35/36 (82s)
+[RECD] round 30/55 acc=0.4046 cov=0.969 succ=32/32 (97s)
+[RECD] round 35/55 acc=0.4046 cov=1.000 succ=62/65 (112s)
+[RECD] round 40/55 acc=0.4190 cov=1.000 succ=36/36 (127s)
+[RECD] round 45/55 acc=0.4410 cov=1.000 succ=26/26 (143s)
+[RECD] round 50/55 acc=0.4498 cov=1.000 succ=21/21 (158s)
+[RECD] round 55/55 acc=0.4499 cov=1.000 succ=28/28 (174s)
+saved sweepN_RECD_med_n30_s1_R200_C4_V50_s1.json

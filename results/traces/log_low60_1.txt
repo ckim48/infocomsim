@@ -1,0 +1,3 @@
+Warning: Could not set locale to 'C'.
+ Retrying in 1 seconds
+saved /Users/ckim48/Downloads/infocomsim/results/traces/trace_low_n60_s1.npz; participant presence=0.999; transitions=1045; edges=724

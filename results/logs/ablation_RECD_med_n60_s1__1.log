@@ -1,0 +1,13 @@
+[RECD] round 1/55 acc=0.0986 cov=0.315 succ=60/60 (8s)
+[RECD] round 5/55 acc=0.1534 cov=0.769 succ=71/73 (30s)
+[RECD] round 10/55 acc=0.2754 cov=0.892 succ=88/88 (57s)
+[RECD] round 15/55 acc=0.3323 cov=0.962 succ=67/76 (83s)
+[RECD] round 20/55 acc=0.3677 cov=0.977 succ=49/49 (111s)
+[RECD] round 25/55 acc=0.3848 cov=1.000 succ=58/63 (138s)
+[RECD] round 30/55 acc=0.3911 cov=1.000 succ=84/84 (167s)
+[RECD] round 35/55 acc=0.4052 cov=1.000 succ=97/105 (194s)
+[RECD] round 40/55 acc=0.4235 cov=1.000 succ=86/91 (221s)
+[RECD] round 45/55 acc=0.4435 cov=1.000 succ=47/47 (249s)
+[RECD] round 50/55 acc=0.4467 cov=1.000 succ=75/75 (276s)
+[RECD] round 55/55 acc=0.4544 cov=1.000 succ=78/78 (305s)
+saved ablation_RECD_med_n60_s1_R200_C4_V50_s1.json

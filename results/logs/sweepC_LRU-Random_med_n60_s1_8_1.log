@@ -1,0 +1,13 @@
+[LRU-Random] round 1/55 acc=0.1001 cov=0.500 succ=99/116 (8s)
+[LRU-Random] round 5/55 acc=0.1651 cov=0.885 succ=121/163 (32s)
+[LRU-Random] round 10/55 acc=0.2612 cov=0.977 succ=129/156 (63s)
+[LRU-Random] round 15/55 acc=0.3233 cov=1.000 succ=119/162 (99s)
+[LRU-Random] round 20/55 acc=0.3474 cov=1.000 succ=105/171 (128s)
+[LRU-Random] round 25/55 acc=0.3608 cov=1.000 succ=127/168 (157s)
+[LRU-Random] round 30/55 acc=0.3762 cov=1.000 succ=133/168 (189s)
+[LRU-Random] round 35/55 acc=0.3820 cov=1.000 succ=123/162 (218s)
+[LRU-Random] round 40/55 acc=0.3859 cov=1.000 succ=132/177 (246s)
+[LRU-Random] round 45/55 acc=0.4040 cov=1.000 succ=133/165 (278s)
+[LRU-Random] round 50/55 acc=0.4078 cov=1.000 succ=127/150 (308s)
+[LRU-Random] round 55/55 acc=0.4112 cov=1.000 succ=132/168 (336s)
+saved sweepC_LRU-Random_med_n60_s1_R200_C8_V50_s1.json

@@ -1,0 +1,13 @@
+[RECD] round 1/55 acc=0.1000 cov=0.397 succ=84/87 (10s)
+[RECD] round 5/55 acc=0.1567 cov=0.757 succ=73/79 (32s)
+[RECD] round 10/55 acc=0.2695 cov=0.853 succ=92/93 (60s)
+[RECD] round 15/55 acc=0.3168 cov=0.926 succ=70/78 (85s)
+[RECD] round 20/55 acc=0.3432 cov=0.978 succ=63/65 (110s)
+[RECD] round 25/55 acc=0.3620 cov=0.985 succ=77/78 (135s)
+[RECD] round 30/55 acc=0.3811 cov=0.985 succ=98/98 (160s)
+[RECD] round 35/55 acc=0.3882 cov=1.000 succ=103/107 (185s)
+[RECD] round 40/55 acc=0.4058 cov=1.000 succ=82/91 (210s)
+[RECD] round 45/55 acc=0.4220 cov=1.000 succ=64/64 (235s)
+[RECD] round 50/55 acc=0.4259 cov=1.000 succ=70/73 (259s)
+[RECD] round 55/55 acc=0.4367 cov=1.000 succ=73/79 (288s)
+saved main_RECD_med_n60_s2_R200_C4_V50_s2.json
