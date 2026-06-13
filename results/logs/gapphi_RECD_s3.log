@@ -1,0 +1,13 @@
+[RECD] round 1/55 acc=0.2125 cov=0.169 succ=28/29 (15s)
+[RECD] round 5/55 acc=0.5224 cov=0.390 succ=26/28 (51s)
+[RECD] round 10/55 acc=0.6075 cov=0.574 succ=28/28 (96s)
+[RECD] round 15/55 acc=0.6141 cov=0.713 succ=25/25 (142s)
+[RECD] round 20/55 acc=0.6288 cov=0.787 succ=29/30 (187s)
+[RECD] round 25/55 acc=0.6210 cov=0.853 succ=31/31 (232s)
+[RECD] round 30/55 acc=0.6289 cov=0.882 succ=32/32 (277s)
+[RECD] round 35/55 acc=0.6201 cov=0.912 succ=31/31 (322s)
+[RECD] round 40/55 acc=0.6285 cov=0.926 succ=38/38 (368s)
+[RECD] round 45/55 acc=0.6251 cov=0.934 succ=30/30 (413s)
+[RECD] round 50/55 acc=0.6361 cov=0.956 succ=36/37 (459s)
+[RECD] round 55/55 acc=0.6354 cov=0.963 succ=34/34 (494s)
+saved gapphi_RECD_low_n60_s1_R100_C4_V50_s3.json

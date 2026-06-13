@@ -26,7 +26,9 @@ N_CLASS = 10
 ENC_BITS = {0: 240e6, 1: 160e6, 2: 80e6}
 
 DEVICE = (
-    torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
+    torch.device("cuda") if torch.cuda.is_available()
+    else torch.device("mps") if torch.backends.mps.is_available()
+    else torch.device("cpu")
 )
 
 

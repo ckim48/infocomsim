@@ -24,6 +24,8 @@ def main():
     ap.add_argument("--dataset", default="fmnist", choices=["fmnist", "har"])
     ap.add_argument("--phi-agg", type=float, default=0.0,
                     help="staleness discount in aggregation weights")
+    ap.add_argument("--local-steps", type=int, default=10,
+                    help="local SGD steps per round")
     ap.add_argument("--tag", default="main")
     args = ap.parse_args()
 
@@ -40,6 +42,7 @@ def main():
         "use_gat": not args.no_gat,
         "dataset": args.dataset,
         "phi_agg": args.phi_agg,
+        "local_steps": args.local_steps,
     }
     hist = run(cfg)
     out_dir = os.path.join(BASE, "results", "runs")

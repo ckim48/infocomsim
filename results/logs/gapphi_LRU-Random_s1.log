@@ -1,0 +1,13 @@
+[LRU-Random] round 1/55 acc=0.2167 cov=0.209 succ=35/39 (13s)
+[LRU-Random] round 5/55 acc=0.4938 cov=0.519 succ=31/33 (48s)
+[LRU-Random] round 10/55 acc=0.5718 cov=0.783 succ=34/37 (90s)
+[LRU-Random] round 15/55 acc=0.5762 cov=0.868 succ=25/29 (133s)
+[LRU-Random] round 20/55 acc=0.5777 cov=0.922 succ=35/37 (176s)
+[LRU-Random] round 25/55 acc=0.5722 cov=0.977 succ=34/34 (219s)
+[LRU-Random] round 30/55 acc=0.5793 cov=0.992 succ=41/43 (261s)
+[LRU-Random] round 35/55 acc=0.5898 cov=1.000 succ=31/31 (304s)
+[LRU-Random] round 40/55 acc=0.5825 cov=1.000 succ=40/41 (347s)
+[LRU-Random] round 45/55 acc=0.5740 cov=1.000 succ=33/37 (390s)
+[LRU-Random] round 50/55 acc=0.5787 cov=1.000 succ=40/41 (433s)
+[LRU-Random] round 55/55 acc=0.5806 cov=1.000 succ=34/36 (476s)
+saved gapphi_LRU-Random_low_n60_s1_R100_C4_V50_s1.json
