@@ -112,15 +112,42 @@ def load_fashion_mnist(root="results/data"):
 
 
 def modality_views(x):
-    """Split a batch of images [B,1,28,28] into the three modality views."""
+    """Split a batch of images [B,1,28,28] into the three modality views.
+
+    Redundant views: each carries most of the class signal, so a single
+    modality already classifies well (low complementarity).
+    """
     top = x[:, :, :14, :]
     bot = x[:, :, 14:, :]
     radar = F.avg_pool2d(x, 4)  # [B,1,7,7]
     return {0: top, 1: bot, 2: radar}
 
 
+# sensor-noise std for complementary modalities; engine may override per run
+COMP_NOISE = 0.7
+
+
+def complementary_views(x, noise=None):
+    """Complementary modalities: three disjoint vertical thirds of the image,
+    each kept at full [28,28] resolution (rest zeroed) plus independent sensor
+    noise. A single modality sees only ~1/3 of the object under noise (weak),
+    while fusing all three recovers the full object (strong). This makes the
+    multimodal task genuinely sharing-dependent: a vehicle with a poor encoder
+    for one modality benefits from receiving a better one.
+    """
+    noise = COMP_NOISE if noise is None else noise
+    bounds = [(0, 9), (9, 19), (19, 28)]  # disjoint thirds
+    out = {}
+    for r, (a, b) in enumerate(bounds):
+        v = torch.zeros_like(x)
+        v[:, :, :, a:b] = x[:, :, :, a:b]
+        v = v + torch.randn_like(v) * noise
+        out[r] = v
+    return out
+
+
 def partition(y_train, n_veh, seed, dirichlet=0.5, size_lognorm=0.6,
-              mean_size=420, p_mod=0.72, q_low_frac=0.35):
+              mean_size=420, p_mod=0.72, q_low_frac=0.35, starve_frac=0.0):
     """Non-IID Dirichlet partition with heterogeneous sizes/modalities/quality.
 
     Returns per-vehicle: sample indices, modality set, per-modality kept
@@ -149,12 +176,24 @@ def partition(y_train, n_veh, seed, dirichlet=0.5, size_lognorm=0.6,
         veh_idx.append(np.array(idx))
 
     mods, mod_frac, quality = assign_heterogeneity(n_veh, rng, p_mod,
-                                                   q_low_frac)
+                                                   q_low_frac, starve_frac)
     return veh_idx, mods, mod_frac, quality
 
 
-def assign_heterogeneity(n_veh, rng, p_mod=0.72, q_low_frac=0.35):
-    """Random modality subsets, per-modality availability, sensing quality."""
+# mod_frac below this sentinel marks a deliberately starved modality, whose
+# local-data floor is relaxed (see Vehicle.__init__). Normal mod_frac is
+# clipped to [0.05, 1.0], so default partitions never trigger it.
+STARVE_FRAC_SENTINEL = 0.003
+
+
+def assign_heterogeneity(n_veh, rng, p_mod=0.72, q_low_frac=0.35,
+                         starve_frac=0.0):
+    """Random modality subsets, per-modality availability, sensing quality.
+
+    If starve_frac > 0, that fraction of vehicles is made data-starved: one of
+    their owned modalities is given near-zero data and low sensing quality, so
+    a useful encoder for that modality can only come from V2V dissemination.
+    """
     mods, mod_frac, quality = [], [], []
     for i in range(n_veh):
         m = [r for r in range(N_MOD) if rng.rand() < p_mod]
@@ -171,6 +210,14 @@ def assign_heterogeneity(n_veh, rng, p_mod=0.72, q_low_frac=0.35):
             q[r] = float(rng.uniform(0.25, 0.55)) if rng.rand() < q_low_frac \
                 else float(rng.uniform(0.8, 1.0))
         quality.append(q)
+
+    n_starve = int(round(starve_frac * n_veh))
+    if n_starve > 0:
+        victims = rng.choice(n_veh, size=min(n_starve, n_veh), replace=False)
+        for i in victims:
+            r = int(rng.choice(mods[i]))  # starve one owned modality
+            mod_frac[i][r] = STARVE_FRAC_SENTINEL
+            quality[i][r] = float(rng.uniform(0.25, 0.4))
     return mods, mod_frac, quality
 
 
@@ -220,9 +267,13 @@ def new_encoder(r):
 
 
 # dataset specs: views fn, encoder factory, number of classes
+ENC_SHAPES_COMP = {0: (28, 28), 1: (28, 28), 2: (28, 28)}
 SPECS = {
     "fmnist": {"views": modality_views, "enc": lambda r: Encoder(ENC_SHAPES[r]),
                "n_class": 10},
+    "fmnist_comp": {"views": complementary_views,
+                    "enc": lambda r: Encoder(ENC_SHAPES_COMP[r]),
+                    "n_class": 10},
     "har": {"views": har_views, "enc": lambda r: Encoder1D(), "n_class": 6},
 }
 
@@ -252,7 +303,9 @@ class Vehicle:
         y = ytr[idx]
         views = self.spec["views"](x)
         for r in mods:
-            n_keep = min(max(int(len(idx) * mod_frac[r]), 20), len(idx))
+            # starved modalities (sentinel mod_frac) keep a much lower floor
+            floor = 3 if mod_frac[r] < 0.02 else 20
+            n_keep = min(max(int(len(idx) * mod_frac[r]), floor), len(idx))
             xv = views[r][:n_keep].clone()
             if quality[r] < 0.7:  # degraded sensing -> additive noise
                 xv += torch.randn_like(xv) * (0.8 * (1 - quality[r]))
@@ -303,22 +356,62 @@ class Vehicle:
             loss.backward()
             optf.step()
 
-    def aggregate(self, r, received, phi_agg=0.0):
+    @torch.no_grad()
+    def _mod_loss(self, r, cap=256):
+        """Local modality-r loss f_{i,r} (Eq. 15) on this vehicle's own data."""
+        xv, yv = self.data[r]
+        n = min(cap, len(xv))
+        xb, yb = xv[:n].to(DEVICE), yv[:n].to(DEVICE)
+        return float(F.cross_entropy(self.aux[r](self.enc[r](xb)), yb))
+
+    def aggregate(self, r, received, phi_agg=0.0, gated=False):
         """Eq. (20): data-size weighted aggregation of own + received encoders.
 
         received: list of (vec, D_m, Q_m, staleness) tuples. With
         phi_agg > 0 the weight is staleness-discounted:
         D_m * Q_m * exp(-phi_agg * Delta).
+
+        If gated=True, the learning-gain guard of Eq. (learning_gain_lower_bound)
+        is enforced: received encoders are folded in one at a time (in order of
+        effective weight) and an encoder is accepted only if it reduces the
+        local modality loss, i.e. G^learn = [.]^+ > 0. Encoders inconsistent
+        with the receiver's local objective are rejected rather than averaged
+        in, preventing negative transfer.
         """
         if r not in self.enc or not received:
             return
+
+        if not gated:
+            wn = float(self.D[r])
+            acc = get_vec(self.enc[r]) * wn
+            for vec, Dm, Qm, dl in received:
+                w = float(Dm) * float(Qm) * float(np.exp(-phi_agg * dl))
+                acc += vec.to(DEVICE) * w
+                wn += w
+            set_vec(self.enc[r], acc / wn)
+            return
+
+        base = get_vec(self.enc[r]).clone()
+        f_cur = self._mod_loss(r)
+        order = sorted(
+            received,
+            key=lambda t: -(float(t[1]) * float(t[2])
+                            * float(np.exp(-phi_agg * t[3]))))
         wn = float(self.D[r])
-        acc = get_vec(self.enc[r]) * wn
-        for vec, Dm, Qm, dl in received:
+        acc = base * wn
+        accepted = False
+        for vec, Dm, Qm, dl in order:
             w = float(Dm) * float(Qm) * float(np.exp(-phi_agg * dl))
-            acc += vec.to(DEVICE) * w
-            wn += w
-        set_vec(self.enc[r], acc / wn)
+            trial = (acc + vec.to(DEVICE) * w) / (wn + w)
+            set_vec(self.enc[r], trial)
+            f_try = self._mod_loss(r)
+            if f_try < f_cur:          # G^learn > 0 -> accept
+                acc = acc + vec.to(DEVICE) * w
+                wn += w
+                f_cur = f_try
+                accepted = True
+        # commit accepted aggregate (== base if nothing reduced the loss)
+        set_vec(self.enc[r], acc / wn if accepted else base)
 
     @torch.no_grad()
     def evaluate(self, xte_views, yte):

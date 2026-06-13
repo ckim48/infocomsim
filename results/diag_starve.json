@@ -1,0 +1,66 @@
+{
+ "RECD|starve0.0": {
+  "acc_all": 32.927501648664474,
+  "acc_starved": null,
+  "acc_fed": 32.927501648664474,
+  "n_starved": 0.0,
+  "jain": 0.777590702136084,
+  "coverage_end": 0.958710407239819
+ },
+ "DFL-Gossip|starve0.0": {
+  "acc_all": 31.74083486199379,
+  "acc_starved": null,
+  "acc_fed": 31.74083486199379,
+  "n_starved": 0.0,
+  "jain": 0.8114069943779365,
+  "coverage_end": 1.0
+ },
+ "LRU-Random|starve0.0": {
+  "acc_all": 32.39000148450335,
+  "acc_starved": null,
+  "acc_fed": 32.39000148450335,
+  "n_starved": 0.0,
+  "jain": 0.8164014204849669,
+  "coverage_end": 0.9926470588235294
+ },
+ "Mobility-Greedy|starve0.0": {
+  "acc_all": 32.41000169888139,
+  "acc_starved": null,
+  "acc_fed": 32.41000169888139,
+  "n_starved": 0.0,
+  "jain": 0.8559490188295942,
+  "coverage_end": 0.9852941176470589
+ },
+ "RECD|starve0.2": {
+  "acc_all": 29.448334739233054,
+  "acc_starved": 17.829167547946174,
+  "acc_fed": 32.35312653705478,
+  "n_starved": 12.0,
+  "jain": 0.7080866897841323,
+  "coverage_end": 0.9440045248868778
+ },
+ "DFL-Gossip|starve0.2": {
+  "acc_all": 29.283334612846375,
+  "acc_starved": 17.666667265196644,
+  "acc_fed": 32.187501449758805,
+  "n_starved": 12.0,
+  "jain": 0.8114069943779365,
+  "coverage_end": 1.0
+ },
+ "LRU-Random|starve0.2": {
+  "acc_all": 29.50666799520453,
+  "acc_starved": 16.754167495916285,
+  "acc_fed": 32.69479312002659,
+  "n_starved": 12.0,
+  "jain": 0.8164014204849669,
+  "coverage_end": 0.9926470588235294
+ },
+ "Mobility-Greedy|starve0.2": {
+  "acc_all": 28.696668092161417,
+  "acc_starved": 18.045834327737488,
+  "acc_fed": 31.3593765332674,
+  "n_starved": 12.0,
+  "jain": 0.7975381236402073,
+  "coverage_end": 0.9816176470588236
+ }
+}

@@ -1,0 +1,32 @@
+{
+ "NoShare": {
+  "acc_all": 38.05583503097296,
+  "acc_starved": 16.87500085681677,
+  "acc_fed": 43.351043574512005,
+  "coverage_end": 0.0
+ },
+ "DFL-naive": {
+  "acc_all": 33.65083480874698,
+  "acc_starved": 18.20416748523712,
+  "acc_fed": 37.51250163962443,
+  "coverage_end": 1.0
+ },
+ "DFL-gated": {
+  "acc_all": 37.44333521152536,
+  "acc_starved": 16.34583414221803,
+  "acc_fed": 42.7177104788522,
+  "coverage_end": 1.0
+ },
+ "RECD-naive": {
+  "acc_all": 34.071668342997626,
+  "acc_starved": 18.537501028428473,
+  "acc_fed": 37.95521017163992,
+  "coverage_end": 0.9852941176470589
+ },
+ "RECD-gated": {
+  "acc_all": 38.032501777634025,
+  "acc_starved": 17.32500079087913,
+  "acc_fed": 43.20937702432275,
+  "coverage_end": 0.9852941176470589
+ }
+}

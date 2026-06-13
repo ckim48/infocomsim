@@ -1,0 +1,57 @@
+
+=== NoShare seed=1 ===
+[NoShare] round 1/25 acc=0.1005 cov=0.000 succ=0/0 (4s)
+[NoShare] round 5/25 acc=0.1795 cov=0.000 succ=0/0 (12s)
+[NoShare] round 10/25 acc=0.2966 cov=0.000 succ=0/0 (22s)
+[NoShare] round 15/25 acc=0.3507 cov=0.000 succ=0/0 (32s)
+[NoShare] round 20/25 acc=0.3749 cov=0.000 succ=0/0 (43s)
+[NoShare] round 25/25 acc=0.3929 cov=0.000 succ=0/0 (53s)
+
+=== NoShare seed=2 ===
+[NoShare] round 1/25 acc=0.1018 cov=0.000 succ=0/0 (2s)
+[NoShare] round 5/25 acc=0.1628 cov=0.000 succ=0/0 (12s)
+[NoShare] round 10/25 acc=0.2764 cov=0.000 succ=0/0 (23s)
+[NoShare] round 15/25 acc=0.3197 cov=0.000 succ=0/0 (33s)
+[NoShare] round 20/25 acc=0.3440 cov=0.000 succ=0/0 (44s)
+[NoShare] round 25/25 acc=0.3665 cov=0.000 succ=0/0 (56s)
+
+=== DFL-Gossip seed=1 ===
+[DFL-Gossip] round 1/25 acc=0.1017 cov=0.638 succ=130/151 (2s)
+[DFL-Gossip] round 5/25 acc=0.1385 cov=0.923 succ=118/151 (12s)
+[DFL-Gossip] round 10/25 acc=0.2507 cov=1.000 succ=117/138 (22s)
+[DFL-Gossip] round 15/25 acc=0.3030 cov=1.000 succ=120/142 (34s)
+[DFL-Gossip] round 20/25 acc=0.3331 cov=1.000 succ=105/147 (44s)
+[DFL-Gossip] round 25/25 acc=0.3424 cov=1.000 succ=120/147 (55s)
+
+=== DFL-Gossip seed=2 ===
+[DFL-Gossip] round 1/25 acc=0.1018 cov=0.566 succ=136/149 (3s)
+[DFL-Gossip] round 5/25 acc=0.1465 cov=0.882 succ=119/153 (11s)
+[DFL-Gossip] round 10/25 acc=0.2353 cov=1.000 succ=127/142 (23s)
+[DFL-Gossip] round 15/25 acc=0.2807 cov=1.000 succ=119/143 (35s)
+[DFL-Gossip] round 20/25 acc=0.2982 cov=1.000 succ=118/155 (47s)
+[DFL-Gossip] round 25/25 acc=0.3257 cov=1.000 succ=128/152 (59s)
+
+=== RECD seed=1 ===
+[RECD] round 1/25 acc=0.0995 cov=0.315 succ=60/60 (3s)
+[RECD] round 5/25 acc=0.1534 cov=0.746 succ=70/72 (12s)
+[RECD] round 10/25 acc=0.2612 cov=0.892 succ=87/87 (24s)
+[RECD] round 15/25 acc=0.3091 cov=0.962 succ=68/75 (36s)
+[RECD] round 20/25 acc=0.3305 cov=0.977 succ=53/53 (48s)
+[RECD] round 25/25 acc=0.3536 cov=1.000 succ=63/66 (59s)
+
+=== RECD seed=2 ===
+[RECD] round 1/25 acc=0.1020 cov=0.257 succ=58/62 (3s)
+[RECD] round 5/25 acc=0.1509 cov=0.765 succ=76/78 (13s)
+[RECD] round 10/25 acc=0.2376 cov=0.897 succ=91/91 (25s)
+[RECD] round 15/25 acc=0.2858 cov=0.926 succ=69/76 (38s)
+[RECD] round 20/25 acc=0.3155 cov=0.941 succ=58/63 (50s)
+[RECD] round 25/25 acc=0.3357 cov=0.971 succ=65/66 (63s)
+
+========== reception benefit (starve 20%, R=25) ==========
+condition       acc_all  acc_starved  acc_fed    cov
+NoShare            38.0         16.4     43.4   0.00
+DFL-Gossip         33.4         18.7     37.1   1.00
+RECD               34.5         18.3     38.5   0.99
+
+starved-vehicle lift from sharing (DFL - NoShare): +2.2 pp
+saved results/diag_reception.json

@@ -39,7 +39,12 @@ def run(cfg):
 
     # ---------------- data & vehicles
     dataset = cfg.get("dataset", "fmnist")
-    spec = SPECS[dataset]
+    spec_key = dataset
+    if dataset == "fmnist" and cfg.get("modality_mode") == "complementary":
+        spec_key = "fmnist_comp"
+        import fl
+        fl.COMP_NOISE = cfg.get("comp_noise", fl.COMP_NOISE)
+    spec = SPECS[spec_key]
     if dataset == "har":
         xtr, ytr, subj_tr, xte, yte = load_uci_har()
         veh_idx = partition_har(subj_tr, N, cfg["seed"])
@@ -47,7 +52,8 @@ def run(cfg):
             N, np.random.RandomState(cfg["seed"]))
     else:
         xtr, ytr, xte, yte = load_fashion_mnist()
-        veh_idx, mods, mod_frac, quality = partition(ytr, N, cfg["seed"])
+        veh_idx, mods, mod_frac, quality = partition(
+            ytr, N, cfg["seed"], starve_frac=cfg.get("starve_frac", 0.0))
     vehicles = [
         Vehicle(i, veh_idx[i], mods[i], mod_frac[i], quality[i], xtr, ytr,
                 cfg["seed"], spec=spec)
@@ -158,7 +164,8 @@ def run(cfg):
                         hist["first_recv"][(j, r)] = k
                     covered.add((j, r))
             for r, recvs in byr.items():
-                vehicles[j].aggregate(r, recvs, phi_agg=phi_agg)
+                vehicles[j].aggregate(r, recvs, phi_agg=phi_agg,
+                                      gated=cfg.get("gated_agg", False))
                 hist["recv_per_veh"][j] += len(recvs)
 
         # ---------------- caching (C2)

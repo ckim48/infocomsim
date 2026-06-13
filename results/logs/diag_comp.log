@@ -1,0 +1,72 @@
+
+=== NoShare seed=1 ===
+[NoShare] round 1/25 acc=0.1003 cov=0.000 succ=0/0 (4s)
+[NoShare] round 5/25 acc=0.1307 cov=0.000 succ=0/0 (14s)
+[NoShare] round 10/25 acc=0.2462 cov=0.000 succ=0/0 (25s)
+[NoShare] round 15/25 acc=0.2934 cov=0.000 succ=0/0 (37s)
+[NoShare] round 20/25 acc=0.3130 cov=0.000 succ=0/0 (48s)
+[NoShare] round 25/25 acc=0.3201 cov=0.000 succ=0/0 (59s)
+
+=== NoShare seed=2 ===
+[NoShare] round 1/25 acc=0.1013 cov=0.000 succ=0/0 (3s)
+[NoShare] round 5/25 acc=0.1417 cov=0.000 succ=0/0 (12s)
+[NoShare] round 10/25 acc=0.2586 cov=0.000 succ=0/0 (23s)
+[NoShare] round 15/25 acc=0.2940 cov=0.000 succ=0/0 (36s)
+[NoShare] round 20/25 acc=0.3041 cov=0.000 succ=0/0 (48s)
+[NoShare] round 25/25 acc=0.3106 cov=0.000 succ=0/0 (59s)
+
+=== DFL-naive seed=1 ===
+[DFL-Gossip] round 1/25 acc=0.1002 cov=0.638 succ=130/151 (3s)
+[DFL-Gossip] round 5/25 acc=0.1132 cov=0.923 succ=118/151 (12s)
+[DFL-Gossip] round 10/25 acc=0.1874 cov=1.000 succ=117/138 (24s)
+[DFL-Gossip] round 15/25 acc=0.2693 cov=1.000 succ=120/142 (37s)
+[DFL-Gossip] round 20/25 acc=0.2910 cov=1.000 succ=105/147 (48s)
+[DFL-Gossip] round 25/25 acc=0.3109 cov=1.000 succ=120/147 (60s)
+
+=== DFL-naive seed=2 ===
+[DFL-Gossip] round 1/25 acc=0.1010 cov=0.566 succ=136/149 (3s)
+[DFL-Gossip] round 5/25 acc=0.1168 cov=0.882 succ=119/153 (14s)
+[DFL-Gossip] round 10/25 acc=0.1921 cov=1.000 succ=127/142 (26s)
+[DFL-Gossip] round 15/25 acc=0.2556 cov=1.000 succ=119/143 (39s)
+[DFL-Gossip] round 20/25 acc=0.2880 cov=1.000 succ=118/155 (50s)
+[DFL-Gossip] round 25/25 acc=0.3041 cov=1.000 succ=128/152 (62s)
+
+=== DFL-gated seed=1 ===
+[DFL-Gossip] round 1/25 acc=0.0984 cov=0.638 succ=130/151 (3s)
+[DFL-Gossip] round 5/25 acc=0.1272 cov=0.923 succ=118/151 (13s)
+[DFL-Gossip] round 10/25 acc=0.2347 cov=1.000 succ=117/138 (24s)
+[DFL-Gossip] round 15/25 acc=0.2849 cov=1.000 succ=120/142 (37s)
+[DFL-Gossip] round 20/25 acc=0.3038 cov=1.000 succ=105/147 (49s)
+[DFL-Gossip] round 25/25 acc=0.3151 cov=1.000 succ=120/147 (63s)
+
+=== DFL-gated seed=2 ===
+[DFL-Gossip] round 1/25 acc=0.1020 cov=0.566 succ=136/149 (4s)
+[DFL-Gossip] round 5/25 acc=0.1287 cov=0.882 succ=119/153 (14s)
+[DFL-Gossip] round 10/25 acc=0.2421 cov=1.000 succ=127/142 (29s)
+[DFL-Gossip] round 15/25 acc=0.2875 cov=1.000 succ=119/143 (43s)
+[DFL-Gossip] round 20/25 acc=0.3062 cov=1.000 succ=118/155 (57s)
+[DFL-Gossip] round 25/25 acc=0.3082 cov=1.000 succ=128/152 (70s)
+
+=== RECD-gated seed=1 ===
+[RECD] round 1/25 acc=0.1011 cov=0.315 succ=60/60 (3s)
+[RECD] round 5/25 acc=0.1219 cov=0.746 succ=70/72 (14s)
+[RECD] round 10/25 acc=0.2359 cov=0.892 succ=87/87 (26s)
+[RECD] round 15/25 acc=0.2862 cov=0.962 succ=68/75 (39s)
+[RECD] round 20/25 acc=0.3023 cov=0.977 succ=53/53 (52s)
+[RECD] round 25/25 acc=0.3069 cov=1.000 succ=63/66 (64s)
+
+=== RECD-gated seed=2 ===
+[RECD] round 1/25 acc=0.1006 cov=0.257 succ=58/62 (4s)
+[RECD] round 5/25 acc=0.1308 cov=0.765 succ=76/78 (14s)
+[RECD] round 10/25 acc=0.2477 cov=0.897 succ=91/91 (27s)
+[RECD] round 15/25 acc=0.2896 cov=0.926 succ=69/76 (39s)
+[RECD] round 20/25 acc=0.3030 cov=0.941 succ=58/63 (52s)
+[RECD] round 25/25 acc=0.3060 cov=0.971 succ=65/66 (66s)
+
+===== complementary (noise0.7) + starve20% + gated, R=25 =====
+cond          acc_all  acc_starved  acc_fed    cov
+NoShare          31.5         13.1     36.1   0.00
+DFL-naive        30.7         15.9     34.5   1.00
+DFL-gated        31.2         12.8     35.8   1.00
+RECD-gated       30.6         12.1     35.3   0.99
+saved results/diag_comp.json
