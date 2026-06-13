@@ -1,0 +1,69 @@
+
+=== RECD seed=1 ===
+[RECD] round 1/10 acc=0.2341 cov=0.155 succ=27/29 (5s)
+[RECD] round 5/10 acc=0.4792 cov=0.550 succ=33/34 (15s)
+[RECD] round 10/10 acc=0.5240 cov=0.705 succ=40/40 (29s)
+
+=== RECD seed=2 ===
+[RECD] round 1/10 acc=0.2381 cov=0.179 succ=33/34 (4s)
+[RECD] round 5/10 acc=0.4814 cov=0.515 succ=34/34 (15s)
+[RECD] round 10/10 acc=0.5336 cov=0.664 succ=41/41 (29s)
+
+=== RECD seed=3 ===
+[RECD] round 1/10 acc=0.2476 cov=0.199 succ=34/34 (4s)
+[RECD] round 5/10 acc=0.5097 cov=0.471 succ=34/36 (15s)
+[RECD] round 10/10 acc=0.5509 cov=0.632 succ=41/41 (30s)
+
+=== DFL-Gossip seed=1 ===
+[DFL-Gossip] round 1/10 acc=0.2428 cov=0.310 succ=46/47 (3s)
+[DFL-Gossip] round 5/10 acc=0.4748 cov=0.558 succ=40/45 (14s)
+[DFL-Gossip] round 10/10 acc=0.5242 cov=0.721 succ=47/47 (27s)
+
+=== DFL-Gossip seed=2 ===
+[DFL-Gossip] round 1/10 acc=0.2255 cov=0.261 succ=45/46 (4s)
+[DFL-Gossip] round 5/10 acc=0.4855 cov=0.560 succ=40/43 (13s)
+[DFL-Gossip] round 10/10 acc=0.5044 cov=0.672 succ=48/49 (26s)
+
+=== DFL-Gossip seed=3 ===
+[DFL-Gossip] round 1/10 acc=0.2493 cov=0.257 succ=46/47 (3s)
+[DFL-Gossip] round 5/10 acc=0.4903 cov=0.500 succ=38/45 (14s)
+[DFL-Gossip] round 10/10 acc=0.5346 cov=0.684 succ=46/47 (27s)
+
+=== LRU-Random seed=1 ===
+[LRU-Random] round 1/10 acc=0.2512 cov=0.194 succ=46/47 (4s)
+[LRU-Random] round 5/10 acc=0.4782 cov=0.612 succ=36/47 (13s)
+[LRU-Random] round 10/10 acc=0.5150 cov=0.853 succ=47/49 (25s)
+
+=== LRU-Random seed=2 ===
+[LRU-Random] round 1/10 acc=0.2407 cov=0.246 succ=45/47 (4s)
+[LRU-Random] round 5/10 acc=0.4679 cov=0.687 succ=39/47 (14s)
+[LRU-Random] round 10/10 acc=0.5226 cov=0.873 succ=48/49 (27s)
+
+=== LRU-Random seed=3 ===
+[LRU-Random] round 1/10 acc=0.2520 cov=0.228 succ=46/47 (4s)
+[LRU-Random] round 5/10 acc=0.4954 cov=0.654 succ=35/47 (15s)
+[LRU-Random] round 10/10 acc=0.5502 cov=0.846 succ=48/49 (27s)
+
+=== Mobility-Greedy seed=1 ===
+[Mobility-Greedy] round 1/10 acc=0.2444 cov=0.256 succ=46/46 (4s)
+[Mobility-Greedy] round 5/10 acc=0.4759 cov=0.527 succ=40/40 (12s)
+[Mobility-Greedy] round 10/10 acc=0.5183 cov=0.713 succ=47/47 (25s)
+
+=== Mobility-Greedy seed=2 ===
+[Mobility-Greedy] round 1/10 acc=0.2394 cov=0.216 succ=45/45 (4s)
+[Mobility-Greedy] round 5/10 acc=0.4893 cov=0.433 succ=40/40 (13s)
+[Mobility-Greedy] round 10/10 acc=0.5227 cov=0.627 succ=49/49 (25s)
+
+=== Mobility-Greedy seed=3 ===
+[Mobility-Greedy] round 1/10 acc=0.2436 cov=0.235 succ=46/46 (3s)
+[Mobility-Greedy] round 5/10 acc=0.4990 cov=0.463 succ=39/39 (13s)
+[Mobility-Greedy] round 10/10 acc=0.5561 cov=0.625 succ=47/47 (24s)
+
+===== HAR starve20%, SCARCE (rounds=10, max_out=1, R=150), 3 seeds =====
+method            acc_all  acc_starved   ±sd   jain firstRecv    cov
+RECD                 53.6         30.3   3.4  0.639      2.67   0.67
+DFL-Gossip           52.1         28.7   2.3  0.786      2.20   0.69
+LRU-Random           52.9         28.1   1.8  0.766      2.56   0.86
+Mobility-Greedy      53.2         30.7   2.3  0.628      2.56   0.66
+
+saved results/diag_scarce.json

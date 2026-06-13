@@ -49,14 +49,16 @@ def run(cfg):
         xtr, ytr, subj_tr, xte, yte = load_uci_har()
         veh_idx = partition_har(subj_tr, N, cfg["seed"])
         mods, mod_frac, quality = assign_heterogeneity(
-            N, np.random.RandomState(cfg["seed"]))
+            N, np.random.RandomState(cfg["seed"]),
+            starve_frac=cfg.get("starve_frac", 0.0))
     else:
         xtr, ytr, xte, yte = load_fashion_mnist()
         veh_idx, mods, mod_frac, quality = partition(
             ytr, N, cfg["seed"], starve_frac=cfg.get("starve_frac", 0.0))
     vehicles = [
         Vehicle(i, veh_idx[i], mods[i], mod_frac[i], quality[i], xtr, ytr,
-                cfg["seed"], spec=spec)
+                cfg["seed"], spec=spec,
+                fusion_mode=cfg.get("fusion_mode", "mean"))
         for i in range(N)
     ]
     n_test = min(cfg.get("n_test", 1000), len(xte))

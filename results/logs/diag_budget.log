@@ -1,0 +1,144 @@
+
+=== R=200.0 RECD seed=1 ===
+[RECD] round 1/25 acc=0.2324 cov=0.349 succ=67/69 (5s)
+[RECD] round 5/25 acc=0.4662 cov=0.791 succ=73/74 (15s)
+[RECD] round 10/25 acc=0.5288 cov=0.915 succ=88/89 (28s)
+[RECD] round 15/25 acc=0.5316 cov=0.977 succ=62/69 (41s)
+[RECD] round 20/25 acc=0.5335 cov=0.977 succ=52/56 (54s)
+[RECD] round 25/25 acc=0.5391 cov=0.977 succ=62/64 (67s)
+
+=== R=200.0 RECD seed=2 ===
+[RECD] round 1/25 acc=0.2220 cov=0.343 succ=69/72 (4s)
+[RECD] round 5/25 acc=0.4737 cov=0.754 succ=74/75 (15s)
+[RECD] round 10/25 acc=0.5320 cov=0.888 succ=84/85 (28s)
+[RECD] round 15/25 acc=0.5494 cov=0.933 succ=80/85 (42s)
+[RECD] round 20/25 acc=0.5502 cov=0.970 succ=61/64 (55s)
+[RECD] round 25/25 acc=0.5437 cov=0.970 succ=64/69 (69s)
+
+=== R=200.0 DFL-Gossip seed=1 ===
+[DFL-Gossip] round 1/25 acc=0.2101 cov=0.628 succ=127/144 (3s)
+[DFL-Gossip] round 5/25 acc=0.4453 cov=0.938 succ=114/147 (13s)
+[DFL-Gossip] round 10/25 acc=0.5123 cov=1.000 succ=120/135 (25s)
+[DFL-Gossip] round 15/25 acc=0.5440 cov=1.000 succ=115/142 (38s)
+[DFL-Gossip] round 20/25 acc=0.5385 cov=1.000 succ=116/154 (50s)
+[DFL-Gossip] round 25/25 acc=0.5444 cov=1.000 succ=123/152 (63s)
+
+=== R=200.0 DFL-Gossip seed=2 ===
+[DFL-Gossip] round 1/25 acc=0.2113 cov=0.619 succ=129/153 (3s)
+[DFL-Gossip] round 5/25 acc=0.4586 cov=0.896 succ=115/139 (13s)
+[DFL-Gossip] round 10/25 acc=0.5214 cov=0.978 succ=128/146 (24s)
+[DFL-Gossip] round 15/25 acc=0.5440 cov=0.993 succ=122/148 (36s)
+[DFL-Gossip] round 20/25 acc=0.5456 cov=0.993 succ=110/160 (49s)
+[DFL-Gossip] round 25/25 acc=0.5568 cov=0.993 succ=129/155 (61s)
+
+=== R=200.0 LRU-Random seed=1 ===
+[LRU-Random] round 1/25 acc=0.2280 cov=0.380 succ=95/114 (3s)
+[LRU-Random] round 5/25 acc=0.4536 cov=0.891 succ=118/161 (12s)
+[LRU-Random] round 10/25 acc=0.5170 cov=0.984 succ=128/156 (24s)
+[LRU-Random] round 15/25 acc=0.5294 cov=1.000 succ=120/162 (35s)
+[LRU-Random] round 20/25 acc=0.5288 cov=1.000 succ=109/171 (47s)
+[LRU-Random] round 25/25 acc=0.5361 cov=1.000 succ=122/168 (59s)
+
+=== R=200.0 LRU-Random seed=2 ===
+[LRU-Random] round 1/25 acc=0.2223 cov=0.410 succ=100/120 (4s)
+[LRU-Random] round 5/25 acc=0.4531 cov=0.881 succ=117/164 (13s)
+[LRU-Random] round 10/25 acc=0.5298 cov=0.978 succ=123/156 (26s)
+[LRU-Random] round 15/25 acc=0.5439 cov=0.993 succ=124/162 (38s)
+[LRU-Random] round 20/25 acc=0.5481 cov=1.000 succ=105/171 (51s)
+[LRU-Random] round 25/25 acc=0.5557 cov=1.000 succ=134/168 (63s)
+
+=== R=200.0 Mobility-Greedy seed=1 ===
+[Mobility-Greedy] round 1/25 acc=0.2115 cov=0.496 succ=107/126 (4s)
+[Mobility-Greedy] round 5/25 acc=0.4318 cov=0.853 succ=116/119 (13s)
+[Mobility-Greedy] round 10/25 acc=0.5125 cov=0.969 succ=103/124 (26s)
+[Mobility-Greedy] round 15/25 acc=0.5220 cov=0.984 succ=107/134 (38s)
+[Mobility-Greedy] round 20/25 acc=0.5309 cov=0.992 succ=97/107 (50s)
+[Mobility-Greedy] round 25/25 acc=0.5418 cov=1.000 succ=113/125 (61s)
+
+=== R=200.0 Mobility-Greedy seed=2 ===
+[Mobility-Greedy] round 1/25 acc=0.2146 cov=0.507 succ=124/136 (3s)
+[Mobility-Greedy] round 5/25 acc=0.4510 cov=0.843 succ=116/119 (13s)
+[Mobility-Greedy] round 10/25 acc=0.5219 cov=0.918 succ=122/132 (25s)
+[Mobility-Greedy] round 15/25 acc=0.5399 cov=0.963 succ=114/143 (37s)
+[Mobility-Greedy] round 20/25 acc=0.5333 cov=0.993 succ=110/112 (49s)
+[Mobility-Greedy] round 25/25 acc=0.5563 cov=0.993 succ=122/133 (62s)
+
+=== R=100.0 RECD seed=1 ===
+[RECD] round 1/25 acc=0.2381 cov=0.217 succ=41/43 (4s)
+[RECD] round 5/25 acc=0.4583 cov=0.705 succ=55/60 (13s)
+[RECD] round 10/25 acc=0.5140 cov=0.845 succ=80/81 (25s)
+[RECD] round 15/25 acc=0.5315 cov=0.930 succ=50/52 (38s)
+[RECD] round 20/25 acc=0.5288 cov=0.984 succ=42/42 (50s)
+[RECD] round 25/25 acc=0.5350 cov=0.984 succ=39/41 (63s)
+
+=== R=100.0 RECD seed=2 ===
+[RECD] round 1/25 acc=0.2269 cov=0.246 succ=43/45 (4s)
+[RECD] round 5/25 acc=0.4818 cov=0.634 succ=58/63 (14s)
+[RECD] round 10/25 acc=0.5358 cov=0.858 succ=76/77 (27s)
+[RECD] round 15/25 acc=0.5551 cov=0.903 succ=53/56 (39s)
+[RECD] round 20/25 acc=0.5545 cov=0.963 succ=48/48 (52s)
+[RECD] round 25/25 acc=0.5603 cov=0.970 succ=48/53 (65s)
+
+=== R=100.0 DFL-Gossip seed=1 ===
+[DFL-Gossip] round 1/25 acc=0.2396 cov=0.535 succ=87/96 (4s)
+[DFL-Gossip] round 5/25 acc=0.4610 cov=0.791 succ=76/83 (13s)
+[DFL-Gossip] round 10/25 acc=0.5068 cov=0.915 succ=82/90 (26s)
+[DFL-Gossip] round 15/25 acc=0.5197 cov=0.977 succ=56/78 (39s)
+[DFL-Gossip] round 20/25 acc=0.5280 cov=0.984 succ=71/78 (52s)
+[DFL-Gossip] round 25/25 acc=0.5331 cov=0.984 succ=67/83 (64s)
+
+=== R=100.0 DFL-Gossip seed=2 ===
+[DFL-Gossip] round 1/25 acc=0.2195 cov=0.470 succ=88/93 (4s)
+[DFL-Gossip] round 5/25 acc=0.4623 cov=0.739 succ=72/84 (14s)
+[DFL-Gossip] round 10/25 acc=0.5241 cov=0.910 succ=84/95 (27s)
+[DFL-Gossip] round 15/25 acc=0.5439 cov=0.963 succ=64/85 (39s)
+[DFL-Gossip] round 20/25 acc=0.5581 cov=0.978 succ=77/87 (51s)
+[DFL-Gossip] round 25/25 acc=0.5513 cov=0.978 succ=69/88 (64s)
+
+=== R=100.0 LRU-Random seed=1 ===
+[LRU-Random] round 1/25 acc=0.2345 cov=0.419 succ=78/87 (4s)
+[LRU-Random] round 5/25 acc=0.4598 cov=0.775 succ=87/108 (14s)
+[LRU-Random] round 10/25 acc=0.5061 cov=0.922 succ=109/123 (25s)
+[LRU-Random] round 15/25 acc=0.5146 cov=0.953 succ=75/111 (37s)
+[LRU-Random] round 20/25 acc=0.5288 cov=0.977 succ=102/117 (49s)
+[LRU-Random] round 25/25 acc=0.5260 cov=0.984 succ=81/117 (61s)
+
+=== R=100.0 LRU-Random seed=2 ===
+[LRU-Random] round 1/25 acc=0.2241 cov=0.366 succ=82/86 (4s)
+[LRU-Random] round 5/25 acc=0.4629 cov=0.731 succ=87/107 (13s)
+[LRU-Random] round 10/25 acc=0.5142 cov=0.903 succ=108/126 (26s)
+[LRU-Random] round 15/25 acc=0.5325 cov=0.955 succ=69/111 (37s)
+[LRU-Random] round 20/25 acc=0.5368 cov=0.985 succ=101/117 (49s)
+[LRU-Random] round 25/25 acc=0.5426 cov=0.985 succ=77/117 (62s)
+
+=== R=100.0 Mobility-Greedy seed=1 ===
+[Mobility-Greedy] round 1/25 acc=0.2141 cov=0.519 succ=86/86 (4s)
+[Mobility-Greedy] round 5/25 acc=0.4616 cov=0.783 succ=73/73 (12s)
+[Mobility-Greedy] round 10/25 acc=0.5170 cov=0.915 succ=81/82 (24s)
+[Mobility-Greedy] round 15/25 acc=0.5265 cov=0.969 succ=58/60 (36s)
+[Mobility-Greedy] round 20/25 acc=0.5400 cov=0.984 succ=70/74 (49s)
+[Mobility-Greedy] round 25/25 acc=0.5438 cov=0.984 succ=66/70 (61s)
+
+=== R=100.0 Mobility-Greedy seed=2 ===
+[Mobility-Greedy] round 1/25 acc=0.2280 cov=0.440 succ=82/83 (4s)
+[Mobility-Greedy] round 5/25 acc=0.4671 cov=0.716 succ=67/67 (13s)
+[Mobility-Greedy] round 10/25 acc=0.5325 cov=0.896 succ=84/88 (25s)
+[Mobility-Greedy] round 15/25 acc=0.5343 cov=0.933 succ=65/70 (36s)
+[Mobility-Greedy] round 20/25 acc=0.5538 cov=0.955 succ=77/81 (49s)
+[Mobility-Greedy] round 25/25 acc=0.5570 cov=0.970 succ=69/71 (62s)
+
+===== HAR starve20%, R^V2V=200 m, R=25 rounds =====
+method            acc_all  acc_starved   jain firstRecv    cov
+RECD                 54.1         31.9  0.801      2.70   0.97
+DFL-Gossip           55.1         31.9  0.832      1.17   1.00
+LRU-Random           54.6         32.1  0.816      1.78   1.00
+Mobility-Greedy      54.9         32.3  0.860      2.03   1.00
+
+===== HAR starve20%, R^V2V=100 m, R=25 rounds =====
+method            acc_all  acc_starved   jain firstRecv    cov
+RECD                 54.8         32.8  0.748      4.11   0.98
+DFL-Gossip           54.2         31.2  0.715      2.42   0.98
+LRU-Random           53.4         29.9  0.764      2.84   0.98
+Mobility-Greedy      55.0         31.8  0.775      2.67   0.98
+
+saved results/diag_budget.json

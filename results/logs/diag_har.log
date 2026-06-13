@@ -1,0 +1,89 @@
+
+=== NoShare seed=1 ===
+[NoShare] round 1/25 acc=0.2489 cov=0.000 succ=0/0 (5s)
+[NoShare] round 5/25 acc=0.4938 cov=0.000 succ=0/0 (14s)
+[NoShare] round 10/25 acc=0.5134 cov=0.000 succ=0/0 (25s)
+[NoShare] round 15/25 acc=0.5150 cov=0.000 succ=0/0 (37s)
+[NoShare] round 20/25 acc=0.5169 cov=0.000 succ=0/0 (49s)
+[NoShare] round 25/25 acc=0.5183 cov=0.000 succ=0/0 (60s)
+
+=== NoShare seed=2 ===
+[NoShare] round 1/25 acc=0.2481 cov=0.000 succ=0/0 (3s)
+[NoShare] round 5/25 acc=0.5113 cov=0.000 succ=0/0 (12s)
+[NoShare] round 10/25 acc=0.5424 cov=0.000 succ=0/0 (24s)
+[NoShare] round 15/25 acc=0.5418 cov=0.000 succ=0/0 (37s)
+[NoShare] round 20/25 acc=0.5449 cov=0.000 succ=0/0 (49s)
+[NoShare] round 25/25 acc=0.5480 cov=0.000 succ=0/0 (62s)
+
+=== DFL-naive seed=1 ===
+[DFL-Gossip] round 1/25 acc=0.2193 cov=0.628 succ=127/144 (4s)
+[DFL-Gossip] round 5/25 acc=0.4496 cov=0.938 succ=114/147 (14s)
+[DFL-Gossip] round 10/25 acc=0.5042 cov=1.000 succ=120/135 (26s)
+[DFL-Gossip] round 15/25 acc=0.5362 cov=1.000 succ=115/142 (39s)
+[DFL-Gossip] round 20/25 acc=0.5458 cov=1.000 succ=116/154 (52s)
+[DFL-Gossip] round 25/25 acc=0.5505 cov=1.000 succ=123/152 (64s)
+
+=== DFL-naive seed=2 ===
+[DFL-Gossip] round 1/25 acc=0.2024 cov=0.619 succ=129/153 (3s)
+[DFL-Gossip] round 5/25 acc=0.4318 cov=0.896 succ=115/139 (13s)
+[DFL-Gossip] round 10/25 acc=0.5145 cov=0.978 succ=128/146 (27s)
+[DFL-Gossip] round 15/25 acc=0.5361 cov=0.993 succ=122/148 (40s)
+[DFL-Gossip] round 20/25 acc=0.5387 cov=0.993 succ=110/160 (54s)
+[DFL-Gossip] round 25/25 acc=0.5588 cov=0.993 succ=129/155 (67s)
+
+=== DFL-gated seed=1 ===
+[DFL-Gossip] round 1/25 acc=0.2406 cov=0.628 succ=127/144 (4s)
+[DFL-Gossip] round 5/25 acc=0.4739 cov=0.938 succ=114/147 (14s)
+[DFL-Gossip] round 10/25 acc=0.5135 cov=1.000 succ=120/135 (26s)
+[DFL-Gossip] round 15/25 acc=0.5117 cov=1.000 succ=115/142 (39s)
+[DFL-Gossip] round 20/25 acc=0.5131 cov=1.000 succ=116/154 (52s)
+[DFL-Gossip] round 25/25 acc=0.5153 cov=1.000 succ=123/152 (65s)
+
+=== DFL-gated seed=2 ===
+[DFL-Gossip] round 1/25 acc=0.2346 cov=0.619 succ=129/153 (4s)
+[DFL-Gossip] round 5/25 acc=0.4776 cov=0.896 succ=115/139 (14s)
+[DFL-Gossip] round 10/25 acc=0.5329 cov=0.978 succ=128/146 (27s)
+[DFL-Gossip] round 15/25 acc=0.5409 cov=0.993 succ=122/148 (40s)
+[DFL-Gossip] round 20/25 acc=0.5394 cov=0.993 succ=110/160 (53s)
+[DFL-Gossip] round 25/25 acc=0.5414 cov=0.993 succ=129/155 (67s)
+
+=== RECD-naive seed=1 ===
+[RECD] round 1/25 acc=0.2321 cov=0.349 succ=67/69 (4s)
+[RECD] round 5/25 acc=0.4549 cov=0.791 succ=73/74 (14s)
+[RECD] round 10/25 acc=0.5232 cov=0.915 succ=88/89 (27s)
+[RECD] round 15/25 acc=0.5355 cov=0.977 succ=62/69 (39s)
+[RECD] round 20/25 acc=0.5311 cov=0.977 succ=52/56 (52s)
+[RECD] round 25/25 acc=0.5449 cov=0.977 succ=62/64 (65s)
+
+=== RECD-naive seed=2 ===
+[RECD] round 1/25 acc=0.2328 cov=0.343 succ=69/72 (4s)
+[RECD] round 5/25 acc=0.4630 cov=0.754 succ=74/75 (15s)
+[RECD] round 10/25 acc=0.5279 cov=0.888 succ=84/85 (28s)
+[RECD] round 15/25 acc=0.5492 cov=0.933 succ=80/85 (42s)
+[RECD] round 20/25 acc=0.5583 cov=0.970 succ=61/64 (55s)
+[RECD] round 25/25 acc=0.5650 cov=0.970 succ=64/69 (69s)
+
+=== RECD-gated seed=1 ===
+[RECD] round 1/25 acc=0.2303 cov=0.349 succ=67/69 (4s)
+[RECD] round 5/25 acc=0.4800 cov=0.791 succ=73/74 (14s)
+[RECD] round 10/25 acc=0.5154 cov=0.915 succ=88/89 (27s)
+[RECD] round 15/25 acc=0.5107 cov=0.977 succ=62/69 (39s)
+[RECD] round 20/25 acc=0.5142 cov=0.977 succ=52/56 (52s)
+[RECD] round 25/25 acc=0.5158 cov=0.977 succ=62/64 (65s)
+
+=== RECD-gated seed=2 ===
+[RECD] round 1/25 acc=0.2588 cov=0.343 succ=69/72 (4s)
+[RECD] round 5/25 acc=0.4963 cov=0.754 succ=74/75 (15s)
+[RECD] round 10/25 acc=0.5355 cov=0.888 succ=84/85 (28s)
+[RECD] round 15/25 acc=0.5400 cov=0.933 succ=80/85 (42s)
+[RECD] round 20/25 acc=0.5438 cov=0.970 succ=61/64 (56s)
+[RECD] round 25/25 acc=0.5434 cov=0.970 succ=64/69 (69s)
+
+===== HAR + starve20% + concat fusion, R=25 =====
+cond          acc_all  acc_starved  acc_fed    cov
+NoShare          53.3         27.2     59.8   0.00
+DFL-naive        55.5         32.9     61.1   1.00
+DFL-gated        52.8         27.6     59.2   1.00
+RECD-naive       55.5         31.4     61.5   0.97
+RECD-gated       53.0         28.0     59.2   0.97
+saved results/diag_har.json

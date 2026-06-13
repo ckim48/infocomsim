@@ -1,0 +1,12 @@
+[NoShare] round 1/20 acc=0.0999 cov=0.000 succ=0/0 (4s)
+[NoShare] round 5/20 acc=0.1309 cov=0.000 succ=0/0 (13s)
+[NoShare] round 10/20 acc=0.2801 cov=0.000 succ=0/0 (24s)
+[NoShare] round 15/20 acc=0.3335 cov=0.000 succ=0/0 (35s)
+[NoShare] round 20/20 acc=0.3521 cov=0.000 succ=0/0 (46s)
+[fusion=mean  ] all=35.2  1mod=31.2  2mod=34.0  3mod=38.7  gap(3-1)=+7.5
+[NoShare] round 1/20 acc=0.1017 cov=0.000 succ=0/0 (3s)
+[NoShare] round 5/20 acc=0.1617 cov=0.000 succ=0/0 (12s)
+[NoShare] round 10/20 acc=0.3038 cov=0.000 succ=0/0 (22s)
+[NoShare] round 15/20 acc=0.3472 cov=0.000 succ=0/0 (33s)
+[NoShare] round 20/20 acc=0.3508 cov=0.000 succ=0/0 (44s)
+[fusion=concat] all=35.1  1mod=30.4  2mod=33.8  3mod=39.1  gap(3-1)=+8.7

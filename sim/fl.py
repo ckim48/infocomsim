@@ -250,15 +250,30 @@ class AuxHead(nn.Module):
 
 
 class Fusion(nn.Module):
-    """Local fusion module: mean of available embeddings -> classifier."""
+    """Local fusion module. forward takes a dict {modality r: emb [B,EMB_DIM]}.
 
-    def __init__(self, n_class=N_CLASS):
+    mode='mean' (default): average available embeddings (legacy behaviour).
+    mode='concat': fixed per-modality slots (zeros for absent modalities), so
+    the classifier uses modalities distinctly and an improved/received encoder
+    that fills a slot directly raises accuracy -- needed for sharing to help.
+    """
+
+    def __init__(self, n_class=N_CLASS, mode="mean", n_mod=N_MOD):
         super().__init__()
-        self.fc1 = nn.Linear(EMB_DIM, 64)
+        self.mode = mode
+        self.n_mod = n_mod
+        in_dim = EMB_DIM * n_mod if mode == "concat" else EMB_DIM
+        self.fc1 = nn.Linear(in_dim, 64)
         self.fc2 = nn.Linear(64, n_class)
 
-    def forward(self, embs):
-        z = torch.stack(embs, 0).mean(0)
+    def forward(self, emb_by_mod):
+        any_emb = next(iter(emb_by_mod.values()))
+        if self.mode == "concat":
+            zero = torch.zeros(any_emb.shape[0], EMB_DIM, device=any_emb.device)
+            z = torch.cat([emb_by_mod.get(r, zero)
+                           for r in range(self.n_mod)], dim=1)
+        else:
+            z = torch.stack(list(emb_by_mod.values()), 0).mean(0)
         return self.fc2(F.relu(self.fc1(z)))
 
 
@@ -289,8 +304,9 @@ def set_vec(model, vec):
 # ---------------------------------------------------------------- vehicle
 class Vehicle:
     def __init__(self, vid, idx, mods, mod_frac, quality, xtr, ytr, seed,
-                 spec=None):
+                 spec=None, fusion_mode="mean"):
         self.spec = spec or SPECS["fmnist"]
+        self.fusion_mode = fusion_mode
         self.id = vid
         self.mods = mods
         self.quality = quality
@@ -315,7 +331,7 @@ class Vehicle:
         self.n_joint = min(self.D.values())
         self.enc = {r: self.spec["enc"](r).to(DEVICE) for r in mods}
         self.aux = {r: AuxHead(self.spec["n_class"]).to(DEVICE) for r in mods}
-        self.fusion = Fusion(self.spec["n_class"]).to(DEVICE)
+        self.fusion = Fusion(self.spec["n_class"], mode=fusion_mode).to(DEVICE)
         lr = 0.02
         self.opt = {
             r: torch.optim.SGD(
@@ -346,11 +362,11 @@ class Vehicle:
         for _ in range(steps):
             sel = torch.randint(0, self.n_joint, (min(bs, self.n_joint),))
             yb = yv0[sel].to(DEVICE)
-            embs = []
+            embs = {}
             for r in self.mods:
                 xvr, _ = self.data[r]
                 with torch.no_grad():
-                    embs.append(self.enc[r](xvr[sel].to(DEVICE)))
+                    embs[r] = self.enc[r](xvr[sel].to(DEVICE))
             optf.zero_grad()
             loss = F.cross_entropy(self.fusion(embs), yb)
             loss.backward()
@@ -415,6 +431,6 @@ class Vehicle:
 
     @torch.no_grad()
     def evaluate(self, xte_views, yte):
-        embs = [self.enc[r](xte_views[r].to(DEVICE)) for r in self.mods]
+        embs = {r: self.enc[r](xte_views[r].to(DEVICE)) for r in self.mods}
         pred = self.fusion(embs).argmax(1)
         return (pred == yte.to(DEVICE)).float().mean().item()
