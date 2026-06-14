@@ -70,7 +70,9 @@ def run(cfg):
     use_gat = cfg.get("use_gat", True) and cfg["method"] == "RECD"
     if use_gat:
         import gat_predictor
-        gat = gat_predictor.train_gat(rg, epochs=cfg.get("gat_epochs", 250))
+        gat = gat_predictor.train_hier_gat(
+            rg, epochs=cfg.get("gat_epochs", 120), R=prm.R,
+            n_t=cfg.get("gat_n_t", 40))
     psi = calibrate_psi(rg)
 
     method = METHODS[cfg["method"]](cfg)
@@ -95,21 +97,26 @@ def run(cfg):
         t = min(k * round_sec, rg.T - 2)
         nbrs, dist = comm.neighbors(rg, t, prm)
 
-        # reachability for RECD (GAT kernel; Markov fallback otherwise)
-        gamma_seg = None
+        # vehicle-specific reachability Gamma_j for RECD (hierarchical GAT;
+        # Markov per-segment fallback when use_gat is off)
+        gam_veh = None
         if cfg["method"] == "RECD":
+            hmax, gdisc = cfg.get("h_max", 3), cfg.get("gamma_disc", 0.8)
             if use_gat:
                 import gat_predictor
-                Pi = gat_predictor.gat_kernel(gat, rg, t)
+                gam_veh = gat_predictor.hier_reachability(
+                    gat, rg, t, R=prm.R, h_max=hmax, gamma=gdisc)
             else:
                 Pi = markov_kernel(rg, t, psi)
-            gamma_seg = reachability(rg, t, Pi, h_max=cfg.get("h_max", 3),
-                                     gamma=cfg.get("gamma_disc", 0.8))
+                gseg = reachability(rg, t, Pi, h_max=hmax, gamma=gdisc)
+                seg = rg.edge_idx[:, t]
+                gam_veh = np.array(
+                    [gseg[e] if e >= 0 else 0.0 for e in seg], dtype=np.float32)
 
         ctx = {
             "rg": rg, "prm": prm, "t": t, "N": N, "round": k,
             "vehicles": vehicles, "caches": caches,
-            "nbrs": nbrs, "dist": dist, "gamma_seg": gamma_seg,
+            "nbrs": nbrs, "dist": dist, "gam_veh": gam_veh,
         }
 
         txs = method.decide(ctx)

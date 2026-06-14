@@ -103,15 +103,11 @@ class RECD(MethodBase):
             self.Y = np.zeros((N, N_MOD))
             self.Z = np.zeros(N)
         rg, prm, t = ctx["rg"], ctx["prm"], ctx["t"]
-        gamma_seg = ctx["gamma_seg"]  # GAT-predicted reachability per segment
         nbrs, dist = ctx["nbrs"], ctx["dist"]
         vehicles = ctx["vehicles"]
 
-        # per-vehicle predicted reachability Gamma_j
-        Gam = np.zeros(N)
-        for j in range(N):
-            e = rg.edge_idx[j, t]
-            Gam[j] = gamma_seg[e] if e >= 0 else 0.0
+        # vehicle-specific predicted reachability Gamma_j (hierarchical GAT)
+        Gam = np.asarray(ctx["gam_veh"], dtype=float)
         Gn = Gam / (Gam.max() + 1e-9)
 
         # Stage 2 (sender-side max-weight matching, Sec. III-C)
@@ -165,9 +161,9 @@ class RECD(MethodBase):
         """Stage 1: density-greedy knapsack by unified utility (Sec. III-C)."""
         rg, t = ctx["rg"], ctx["t"]
         veh = ctx["vehicles"][veh_id]
-        e = rg.edge_idx[veh_id, t]
-        g = ctx["gamma_seg"][e] if e >= 0 else 0.0
-        gmax = ctx["gamma_seg"].max() + 1e-9
+        gam_veh = np.asarray(ctx["gam_veh"], dtype=float)
+        g = float(gam_veh[veh_id])
+        gmax = float(gam_veh.max()) + 1e-9
         scored = []
         for key, ent in candidates.items():
             src, r = key

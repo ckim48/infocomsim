@@ -1,0 +1,81 @@
+
+=== Mobility-Greedy seed=1 ===
+[Mobility-Greedy] round 1/15 acc=0.2187 cov=0.465 succ=71/71 (5s)
+[Mobility-Greedy] round 5/15 acc=0.4631 cov=0.713 succ=60/60 (15s)
+[Mobility-Greedy] round 10/15 acc=0.5325 cov=0.899 succ=67/68 (27s)
+[Mobility-Greedy] round 15/15 acc=0.5235 cov=0.946 succ=49/51 (39s)
+
+=== Mobility-Greedy seed=2 ===
+[Mobility-Greedy] round 1/15 acc=0.2253 cov=0.358 succ=66/66 (4s)
+[Mobility-Greedy] round 5/15 acc=0.4698 cov=0.619 succ=57/57 (14s)
+[Mobility-Greedy] round 10/15 acc=0.5282 cov=0.828 succ=69/72 (26s)
+[Mobility-Greedy] round 15/15 acc=0.5422 cov=0.918 succ=54/56 (38s)
+
+=== Mobility-Greedy seed=3 ===
+[Mobility-Greedy] round 1/15 acc=0.2444 cov=0.412 succ=70/70 (3s)
+[Mobility-Greedy] round 5/15 acc=0.4924 cov=0.654 succ=57/57 (13s)
+[Mobility-Greedy] round 10/15 acc=0.5459 cov=0.816 succ=71/74 (24s)
+[Mobility-Greedy] round 15/15 acc=0.5666 cov=0.919 succ=58/59 (36s)
+
+=== RECD Ebar3 (energy-limited) seed=1 ===
+[RECD] round 1/15 acc=0.2430 cov=0.209 succ=36/37 (4s)
+[RECD] round 5/15 acc=0.4652 cov=0.651 succ=47/52 (15s)
+[RECD] round 10/15 acc=0.5195 cov=0.829 succ=66/68 (28s)
+[RECD] round 15/15 acc=0.5273 cov=0.922 succ=43/45 (41s)
+
+=== RECD Ebar3 (energy-limited) seed=2 ===
+[RECD] round 1/15 acc=0.2301 cov=0.216 succ=40/41 (4s)
+[RECD] round 5/15 acc=0.4640 cov=0.597 succ=47/51 (15s)
+[RECD] round 10/15 acc=0.5253 cov=0.799 succ=65/66 (29s)
+[RECD] round 15/15 acc=0.5486 cov=0.851 succ=43/46 (42s)
+
+=== RECD Ebar3 (energy-limited) seed=3 ===
+[RECD] round 1/15 acc=0.2293 cov=0.221 succ=40/41 (4s)
+[RECD] round 5/15 acc=0.4951 cov=0.588 succ=50/52 (15s)
+[RECD] round 10/15 acc=0.5559 cov=0.787 succ=65/66 (29s)
+[RECD] round 15/15 acc=0.5614 cov=0.875 succ=48/48 (42s)
+
+=== RECD Ebar1e3 (energy-free) seed=1 ===
+[RECD] round 1/15 acc=0.2563 cov=0.209 succ=36/37 (4s)
+[RECD] round 5/15 acc=0.4662 cov=0.651 succ=47/52 (14s)
+[RECD] round 10/15 acc=0.5179 cov=0.829 succ=66/68 (28s)
+[RECD] round 15/15 acc=0.5275 cov=0.922 succ=43/45 (42s)
+
+=== RECD Ebar1e3 (energy-free) seed=2 ===
+[RECD] round 1/15 acc=0.2371 cov=0.216 succ=40/41 (4s)
+[RECD] round 5/15 acc=0.4680 cov=0.597 succ=47/51 (15s)
+[RECD] round 10/15 acc=0.5232 cov=0.799 succ=65/66 (29s)
+[RECD] round 15/15 acc=0.5442 cov=0.851 succ=43/46 (42s)
+
+=== RECD Ebar1e3 (energy-free) seed=3 ===
+[RECD] round 1/15 acc=0.2464 cov=0.221 succ=40/41 (4s)
+[RECD] round 5/15 acc=0.4923 cov=0.588 succ=50/52 (14s)
+[RECD] round 10/15 acc=0.5582 cov=0.787 succ=65/66 (27s)
+[RECD] round 15/15 acc=0.5731 cov=0.875 succ=48/48 (41s)
+
+=== RECD nu1.5 Ebar1e3 seed=1 ===
+[RECD] round 1/15 acc=0.2268 cov=0.209 succ=36/37 (4s)
+[RECD] round 5/15 acc=0.4823 cov=0.659 succ=46/50 (15s)
+[RECD] round 10/15 acc=0.5159 cov=0.822 succ=65/67 (28s)
+[RECD] round 15/15 acc=0.5316 cov=0.922 succ=42/43 (41s)
+
+=== RECD nu1.5 Ebar1e3 seed=2 ===
+[RECD] round 1/15 acc=0.2393 cov=0.224 succ=40/41 (4s)
+[RECD] round 5/15 acc=0.4732 cov=0.597 succ=47/51 (15s)
+[RECD] round 10/15 acc=0.5351 cov=0.791 succ=65/66 (28s)
+[RECD] round 15/15 acc=0.5445 cov=0.836 succ=43/46 (42s)
+
+=== RECD nu1.5 Ebar1e3 seed=3 ===
+[RECD] round 1/15 acc=0.2471 cov=0.213 succ=40/41 (4s)
+[RECD] round 5/15 acc=0.5003 cov=0.574 succ=48/50 (15s)
+[RECD] round 10/15 acc=0.5657 cov=0.765 succ=63/63 (29s)
+[RECD] round 15/15 acc=0.5629 cov=0.860 succ=46/46 (42s)
+
+===== isolate road-awareness: relax energy budget (HAR sparse, 3 seeds) =====
+condition                       acc_all  acc_starved   ±sd   jain firstRecv    cov
+Mobility-Greedy                    54.4         31.4   1.6  0.759      3.03   0.93
+RECD Ebar3 (energy-limited)        54.6         30.2   1.7  0.690      3.69   0.88
+RECD Ebar1e3 (energy-free)         54.8         30.2   1.0  0.690      3.69   0.88
+RECD nu1.5 Ebar1e3                 54.6         30.2   0.8  0.689      3.60   0.87
+
+saved results/diag_roadaware2.json

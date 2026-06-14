@@ -1,0 +1,81 @@
+
+=== Mobility-Greedy (ref) seed=1 ===
+[Mobility-Greedy] round 1/15 acc=0.2470 cov=0.465 succ=71/71 (5s)
+[Mobility-Greedy] round 5/15 acc=0.4635 cov=0.713 succ=60/60 (14s)
+[Mobility-Greedy] round 10/15 acc=0.5202 cov=0.899 succ=67/68 (25s)
+[Mobility-Greedy] round 15/15 acc=0.5281 cov=0.946 succ=49/51 (38s)
+
+=== Mobility-Greedy (ref) seed=2 ===
+[Mobility-Greedy] round 1/15 acc=0.2341 cov=0.358 succ=66/66 (4s)
+[Mobility-Greedy] round 5/15 acc=0.4612 cov=0.619 succ=57/57 (14s)
+[Mobility-Greedy] round 10/15 acc=0.5230 cov=0.828 succ=69/72 (26s)
+[Mobility-Greedy] round 15/15 acc=0.5459 cov=0.918 succ=54/56 (38s)
+
+=== Mobility-Greedy (ref) seed=3 ===
+[Mobility-Greedy] round 1/15 acc=0.2373 cov=0.412 succ=70/70 (4s)
+[Mobility-Greedy] round 5/15 acc=0.4940 cov=0.654 succ=57/57 (13s)
+[Mobility-Greedy] round 10/15 acc=0.5484 cov=0.816 succ=71/74 (25s)
+[Mobility-Greedy] round 15/15 acc=0.5660 cov=0.919 succ=58/59 (38s)
+
+=== RECD Gamma OFF (nu0) seed=1 ===
+[RECD] round 1/15 acc=0.2355 cov=0.202 succ=31/33 (4s)
+[RECD] round 5/15 acc=0.4731 cov=0.651 succ=40/43 (15s)
+[RECD] round 10/15 acc=0.5108 cov=0.822 succ=53/54 (27s)
+[RECD] round 15/15 acc=0.5354 cov=0.915 succ=30/32 (40s)
+
+=== RECD Gamma OFF (nu0) seed=2 ===
+[RECD] round 1/15 acc=0.2246 cov=0.224 succ=37/38 (4s)
+[RECD] round 5/15 acc=0.4723 cov=0.612 succ=41/45 (16s)
+[RECD] round 10/15 acc=0.5369 cov=0.799 succ=61/62 (30s)
+[RECD] round 15/15 acc=0.5577 cov=0.851 succ=38/41 (43s)
+
+=== RECD Gamma OFF (nu0) seed=3 ===
+[RECD] round 1/15 acc=0.2395 cov=0.221 succ=36/38 (4s)
+[RECD] round 5/15 acc=0.4956 cov=0.596 succ=40/43 (15s)
+[RECD] round 10/15 acc=0.5588 cov=0.757 succ=57/57 (29s)
+[RECD] round 15/15 acc=0.5618 cov=0.853 succ=40/40 (43s)
+
+=== RECD Gamma ON nu1.5 h6 seed=1 ===
+[RECD] round 1/15 acc=0.2421 cov=0.209 succ=36/37 (4s)
+[RECD] round 5/15 acc=0.4735 cov=0.659 succ=46/50 (15s)
+[RECD] round 10/15 acc=0.5201 cov=0.822 succ=65/67 (29s)
+[RECD] round 15/15 acc=0.5378 cov=0.922 succ=42/43 (44s)
+
+=== RECD Gamma ON nu1.5 h6 seed=2 ===
+[RECD] round 1/15 acc=0.2455 cov=0.224 succ=40/41 (4s)
+[RECD] round 5/15 acc=0.4791 cov=0.597 succ=47/51 (16s)
+[RECD] round 10/15 acc=0.5402 cov=0.791 succ=65/66 (30s)
+[RECD] round 15/15 acc=0.5464 cov=0.836 succ=43/46 (45s)
+
+=== RECD Gamma ON nu1.5 h6 seed=3 ===
+[RECD] round 1/15 acc=0.2515 cov=0.213 succ=40/41 (4s)
+[RECD] round 5/15 acc=0.5037 cov=0.574 succ=48/50 (14s)
+[RECD] round 10/15 acc=0.5477 cov=0.765 succ=63/63 (27s)
+[RECD] round 15/15 acc=0.5588 cov=0.860 succ=46/46 (41s)
+
+=== RECD Gamma ON nu3.0 h6 seed=1 ===
+[RECD] round 1/15 acc=0.2305 cov=0.209 succ=36/37 (4s)
+[RECD] round 5/15 acc=0.4706 cov=0.651 succ=47/52 (15s)
+[RECD] round 10/15 acc=0.5165 cov=0.829 succ=66/68 (29s)
+[RECD] round 15/15 acc=0.5261 cov=0.922 succ=43/45 (43s)
+
+=== RECD Gamma ON nu3.0 h6 seed=2 ===
+[RECD] round 1/15 acc=0.2384 cov=0.216 succ=40/41 (4s)
+[RECD] round 5/15 acc=0.4643 cov=0.597 succ=47/51 (15s)
+[RECD] round 10/15 acc=0.5322 cov=0.799 succ=65/66 (29s)
+[RECD] round 15/15 acc=0.5437 cov=0.851 succ=43/46 (42s)
+
+=== RECD Gamma ON nu3.0 h6 seed=3 ===
+[RECD] round 1/15 acc=0.2518 cov=0.221 succ=40/41 (4s)
+[RECD] round 5/15 acc=0.4916 cov=0.588 succ=50/52 (15s)
+[RECD] round 10/15 acc=0.5559 cov=0.787 succ=65/66 (28s)
+[RECD] round 15/15 acc=0.5686 cov=0.875 succ=48/48 (43s)
+
+===== Gamma on/off ablation (HAR sparse R=100, rounds=15, starve20%, 3 seeds) =====
+condition                   acc_all  acc_starved   ±sd   jain firstRecv   #recv    cov
+Mobility-Greedy (ref)          54.7         31.6   1.9  0.759      3.03     873   0.93
+RECD Gamma OFF (nu0)           55.2         31.7   1.3  0.690      3.54     618   0.87
+RECD Gamma ON nu1.5 h6         54.8         29.5   2.6  0.689      3.60     617   0.87
+RECD Gamma ON nu3.0 h6         54.6         31.0   0.5  0.690      3.69     611   0.88
+
+saved results/diag_gamma.json
