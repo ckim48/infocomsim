@@ -220,6 +220,15 @@ def run(cfg):
                 keep = method.select_cache(j, ctx, cands, cap_bits)
                 caches[j] = {key: cands[key] for key in keep}
 
+        # ---------------- track one encoder's spatial journey (for figures)
+        if cfg.get("track_key") is not None:
+            tk = tuple(cfg["track_key"])
+            holders = [i for i in range(N)
+                       if i == tk[0] or tk in caches[i]]
+            hist.setdefault("track", []).append(
+                {"round": k, "holders": holders,
+                 "pos": rg.pos[holders, t].tolist()})
+
         # ---------------- Lyapunov queues (RECD)
         if hasattr(method, "update_queues"):
             method.update_queues(ctx, received_by, energy_by)
