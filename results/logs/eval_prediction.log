@@ -1,0 +1,14 @@
+transitions: train 506 (160 t) | test 450 (160 t); branching segs=108
+
+training HierGAT (vehicle-specific + history) ...
+  593s
+training GAT (shared) ...
+  572s
+
+===== next-segment prediction top-1 accuracy (held-out future) =====
+predictor                          all  branching
+Markov (shared, analytic)         71.5       66.0
+GAT (shared)                      65.6       54.3
+HierGAT (veh-specific+hist)       64.7       53.2
+(n_all=337, n_branching=94)
+saved results/eval_prediction.json

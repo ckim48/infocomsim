@@ -40,21 +40,51 @@ def run(cfg):
     # ---------------- data & vehicles
     dataset = cfg.get("dataset", "fmnist")
     spec_key = dataset
+    # heterogeneity knobs (modality ownership, quality severity) -- harsh regimes
+    het = dict(p_mod=cfg.get("p_mod", 0.72), q_low_frac=cfg.get("q_low_frac", 0.35),
+               q_low_range=tuple(cfg.get("q_low_range", (0.25, 0.55))))
+    import fl as _flmod
+    _flmod.QUAL_NOISE = cfg.get("qual_noise", _flmod.QUAL_NOISE)
     if dataset == "fmnist" and cfg.get("modality_mode") == "complementary":
         spec_key = "fmnist_comp"
         import fl
         fl.COMP_NOISE = cfg.get("comp_noise", fl.COMP_NOISE)
     spec = SPECS[spec_key]
-    if dataset == "har":
+    if dataset in ("raymob", "raymob8"):
+        import fl
+        xtr, ytr, region_tr, xte, yte, present = fl.load_raymob(
+            cfg.get("raymob_root", "results/data/raymobtime/bs_baseline_data"),
+            coarse=(dataset == "raymob8"))
+        veh_idx = fl.partition_raymob(region_tr, N, cfg["seed"])
+        mods, mod_frac, quality = assign_heterogeneity(
+            N, np.random.RandomState(cfg["seed"]),
+            starve_frac=cfg.get("starve_frac", 0.0),
+            starve_ids=cfg.get("starve_ids"), starve_mod=cfg.get("starve_mod"),
+            universe=present, **het)
+    elif dataset == "mmfi":
+        import fl
+        xtr, ytr, subj_tr, xte, yte, present = fl.load_mmfi(
+            cfg.get("mmfi_cache", "results/data/mmfi_cache.npz"))
+        veh_idx = fl.partition_mmfi(subj_tr, N, cfg["seed"])
+        mods, mod_frac, quality = assign_heterogeneity(
+            N, np.random.RandomState(cfg["seed"]),
+            starve_frac=cfg.get("starve_frac", 0.0),
+            starve_ids=cfg.get("starve_ids"), starve_mod=cfg.get("starve_mod"),
+            universe=present)
+    elif dataset == "har":
         xtr, ytr, subj_tr, xte, yte = load_uci_har()
         veh_idx = partition_har(subj_tr, N, cfg["seed"])
         mods, mod_frac, quality = assign_heterogeneity(
             N, np.random.RandomState(cfg["seed"]),
-            starve_frac=cfg.get("starve_frac", 0.0))
+            starve_frac=cfg.get("starve_frac", 0.0),
+            starve_ids=cfg.get("starve_ids"), starve_mod=cfg.get("starve_mod"),
+            **het)
     else:
         xtr, ytr, xte, yte = load_fashion_mnist()
         veh_idx, mods, mod_frac, quality = partition(
-            ytr, N, cfg["seed"], starve_frac=cfg.get("starve_frac", 0.0))
+            ytr, N, cfg["seed"], starve_frac=cfg.get("starve_frac", 0.0),
+            starve_ids=cfg.get("starve_ids"), starve_mod=cfg.get("starve_mod"),
+            **het)
     vehicles = [
         Vehicle(i, veh_idx[i], mods[i], mod_frac[i], quality[i], xtr, ytr,
                 cfg["seed"], spec=spec,
@@ -196,6 +226,22 @@ def run(cfg):
             hist["y_queue"].append(float(method.Y.mean()))
             hist["z_queue"].append(float(method.Z.mean()))
 
+        # ---------------- fusion sharing (option 1): FedAvg neighbours' fusion
+        # modules, weighted by joint-sample count. The Fusion concat head has a
+        # fixed shape across vehicles, so a vehicle starved of joint multimodal
+        # samples (its bottleneck) can inherit a fusion trained on neighbours'
+        # joint data -- which plain encoder sharing cannot provide.
+        if cfg.get("share_fusion"):
+            import fl as _fl
+            new_fus = {}
+            for j in range(N):
+                peers = [j] + list(nbrs[j])
+                ws = np.array([max(vehicles[p].n_joint, 1) for p in peers], float)
+                vecs = [_fl.get_vec(vehicles[p].fusion) for p in peers]
+                new_fus[j] = sum(w * v for w, v in zip(ws, vecs)) / ws.sum()
+            for j in range(N):
+                _fl.set_vec(vehicles[j].fusion, new_fus[j])
+
         # ---------------- local training
         for v in vehicles:
             v.local_train(steps=cfg.get("local_steps", 10))
@@ -223,6 +269,20 @@ def run(cfg):
          "Q": {str(r): float(q) for r, q in v.quality.items()}}
         for v in vehicles
     ]
+
+    # ENCODER-level evaluation (not the fused model): per-modality linear-probe
+    # accuracy of each vehicle's frozen encoders on a global probe/test split.
+    # This is what isolates whether a shared encoder is actually a better
+    # representation -- the metric the paper's premise is really about.
+    if cfg.get("enc_eval", True):
+        n_probe = min(cfg.get("n_probe", 2000), len(ytr))
+        psel = rng.choice(len(ytr), n_probe, replace=False)
+        xtr_probe = spec["views"](xtr[psel])
+        ytr_probe = ytr[psel]
+        hist["enc_acc_per_veh"] = [
+            v.encoder_probe_acc(xtr_probe, ytr_probe, xte_views, yte_s)
+            for v in vehicles
+        ]
 
     # final summary metrics
     fr = list(hist["first_recv"].values())

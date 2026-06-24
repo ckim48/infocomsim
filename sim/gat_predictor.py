@@ -87,16 +87,38 @@ def com_edges(rg, t, R):
             torch.tensor(j, dtype=torch.long))
 
 
+def prev_segs(rg):
+    """[N,T] previous DISTINCT road segment for each vehicle (-1 if none).
+
+    Lets the predictor condition on the turn just taken (trajectory history),
+    which a memoryless Markov kernel cannot use.
+    """
+    if hasattr(rg, "_prevseg"):
+        return rg._prevseg
+    E = rg.edge_idx
+    prev = np.full(E.shape, -1, dtype=np.int64)
+    for j in range(E.shape[0]):
+        last, cur = -1, -1
+        for t in range(E.shape[1]):
+            e = int(E[j, t])
+            if e >= 0 and e != cur:
+                last, cur = cur, e
+            prev[j, t] = last
+    rg._prevseg = prev
+    return prev
+
+
 class HierGAT(nn.Module):
-    def __init__(self, road_in=6, veh_in=4):
+    def __init__(self, road_in=6, veh_in=4, vehicle_specific=True):
         super().__init__()
+        self.vehicle_specific = vehicle_specific
         self.dir_emb = nn.Embedding(N_DIR, EMB)
         # road-segment GAT
         self.road_in = nn.Linear(road_in, DG)
         self.road_gat = nn.ModuleList([GATLayer(DG, DG, EMB) for _ in range(2)])
         # vehicle input + road-conditioned (bipartite, single segment per veh)
         self.veh_in = nn.Linear(veh_in, DG)
-        self.rc = nn.Linear(2 * DG, DG)
+        self.rc = nn.Linear(3 * DG, DG)   # veh + current-seg + prev-seg context
         # V2V vehicle GAT
         self.v2v_gat = GATLayer(DG, DG)
         # per-vehicle road-transition head: w_o^T [h_j | h_e | h_e' | d_delta]
@@ -114,7 +136,11 @@ class HierGAT(nn.Module):
         hv0 = F.relu(self.veh_in(xv))
         seg = torch.tensor(np.clip(rg.edge_idx[:, t], 0, rg.E - 1),
                            dtype=torch.long)
-        hv_rc = F.relu(self.rc(torch.cat([hv0, hr[seg]], dim=1)))
+        pv = prev_segs(rg)[:, t]
+        pmask = torch.tensor((pv >= 0).astype(np.float32)).unsqueeze(1)
+        pseg = torch.tensor(np.clip(pv, 0, rg.E - 1), dtype=torch.long)
+        h_prev = hr[pseg] * pmask
+        hv_rc = F.relu(self.rc(torch.cat([hv0, hr[seg], h_prev], dim=1)))
         # V2V vehicle layer
         ci, cj = com_edges(rg, t, R)
         if len(ci) > 0:
@@ -128,7 +154,10 @@ class HierGAT(nn.Module):
         de = self.dir_emb(dirlab)
         road_part = torch.cat([hr[src], hr[dst], de], dim=1)   # [F, 2DG+EMB]
         N, Fn = hv.shape[0], road_part.shape[0]
-        hv_e = hv.unsqueeze(1).expand(N, Fn, hv.shape[1])       # [N,F,DG]
+        if self.vehicle_specific:
+            hv_e = hv.unsqueeze(1).expand(N, Fn, hv.shape[1])  # [N,F,DG]
+        else:  # shared kernel: drop per-vehicle conditioning
+            hv_e = torch.zeros(N, Fn, hv.shape[1], device=hv.device)
         rp_e = road_part.unsqueeze(0).expand(N, Fn, road_part.shape[1])
         o = self.head(torch.cat([hv_e, rp_e], dim=2)).squeeze(-1)  # [N,F]
         return o
@@ -160,7 +189,7 @@ def _collect_transitions(rg, max_per_t=None):
 
 
 def train_hier_gat(rg, epochs=120, lr=5e-3, R=200.0, n_t=40, seed=0,
-                   verbose=False):
+                   verbose=False, vehicle_specific=True):
     """Train HierGAT on per-vehicle next-segment transitions (Eq. hgat loss)."""
     torch.manual_seed(seed)
     src, dst, dirlab = _feas_tensors(rg)
@@ -175,7 +204,7 @@ def train_hier_gat(rg, epochs=120, lr=5e-3, R=200.0, n_t=40, seed=0,
     sample_t = times if len(times) <= n_t else \
         sorted(rng.choice(times, n_t, replace=False).tolist())
 
-    model = HierGAT()
+    model = HierGAT(vehicle_specific=vehicle_specific)
     opt = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4)
     for ep in range(epochs):
         opt.zero_grad()

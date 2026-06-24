@@ -1,2 +1,6 @@
 __pycache__/
 *.pyc
+
+# newly downloaded datasets (too large for git)
+results/data/mmfi/
+results/data/raymobtime/

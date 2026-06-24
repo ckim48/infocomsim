@@ -1,0 +1,71 @@
+left/needy region: 30 vehicles (x < 1100)
+
+=== Mobility-Greedy (ref) seed=1 ===
+[Mobility-Greedy] round 1/12 acc=0.2390 cov=0.264 succ=39/39 (5s)
+[Mobility-Greedy] round 5/12 acc=0.4324 cov=0.465 succ=34/34 (15s)
+[Mobility-Greedy] round 10/12 acc=0.4598 cov=0.659 succ=40/40 (26s)
+
+=== Mobility-Greedy (ref) seed=2 ===
+[Mobility-Greedy] round 1/12 acc=0.2279 cov=0.209 succ=37/37 (4s)
+[Mobility-Greedy] round 5/12 acc=0.4250 cov=0.425 succ=36/36 (14s)
+[Mobility-Greedy] round 10/12 acc=0.4906 cov=0.619 succ=39/39 (25s)
+
+=== Mobility-Greedy (ref) seed=3 ===
+[Mobility-Greedy] round 1/12 acc=0.2392 cov=0.243 succ=37/37 (4s)
+[Mobility-Greedy] round 5/12 acc=0.4412 cov=0.426 succ=34/34 (14s)
+[Mobility-Greedy] round 10/12 acc=0.4894 cov=0.610 succ=39/39 (27s)
+
+=== RECD Gamma-off (nu0) seed=1 ===
+[RECD] round 1/12 acc=0.2380 cov=0.116 succ=17/17 (4s)
+[RECD] round 5/12 acc=0.4306 cov=0.481 succ=26/29 (14s)
+[RECD] round 10/12 acc=0.4604 cov=0.651 succ=33/33 (27s)
+
+=== RECD Gamma-off (nu0) seed=2 ===
+[RECD] round 1/12 acc=0.2209 cov=0.142 succ=22/22 (4s)
+[RECD] round 5/12 acc=0.4412 cov=0.448 succ=25/27 (14s)
+[RECD] round 10/12 acc=0.4777 cov=0.634 succ=36/36 (27s)
+
+=== RECD Gamma-off (nu0) seed=3 ===
+[RECD] round 1/12 acc=0.2454 cov=0.154 succ=23/23 (4s)
+[RECD] round 5/12 acc=0.4451 cov=0.434 succ=27/30 (14s)
+[RECD] round 10/12 acc=0.4839 cov=0.625 succ=35/35 (27s)
+
+=== RECD Markov per-seg seed=1 ===
+[RECD] round 1/12 acc=0.2447 cov=0.109 succ=21/21 (4s)
+[RECD] round 5/12 acc=0.4354 cov=0.481 succ=27/30 (14s)
+[RECD] round 10/12 acc=0.4634 cov=0.682 succ=36/36 (25s)
+
+=== RECD Markov per-seg seed=2 ===
+[RECD] round 1/12 acc=0.2384 cov=0.134 succ=25/25 (3s)
+[RECD] round 5/12 acc=0.4289 cov=0.418 succ=29/30 (14s)
+[RECD] round 10/12 acc=0.4781 cov=0.627 succ=36/36 (27s)
+
+=== RECD Markov per-seg seed=3 ===
+[RECD] round 1/12 acc=0.2471 cov=0.147 succ=26/26 (4s)
+[RECD] round 5/12 acc=0.4498 cov=0.441 succ=30/32 (14s)
+[RECD] round 10/12 acc=0.4948 cov=0.610 succ=36/36 (28s)
+
+=== RECD HierGAT (veh) seed=1 ===
+[RECD] round 1/12 acc=0.2408 cov=0.109 succ=20/20 (210s)
+[RECD] round 5/12 acc=0.4218 cov=0.481 succ=27/30 (219s)
+[RECD] round 10/12 acc=0.4530 cov=0.667 succ=36/36 (231s)
+
+=== RECD HierGAT (veh) seed=2 ===
+[RECD] round 1/12 acc=0.2163 cov=0.134 succ=24/24 (209s)
+[RECD] round 5/12 acc=0.4226 cov=0.448 succ=29/30 (219s)
+[RECD] round 10/12 acc=0.4777 cov=0.649 succ=36/36 (232s)
+
+=== RECD HierGAT (veh) seed=3 ===
+[RECD] round 1/12 acc=0.2461 cov=0.147 succ=25/25 (213s)
+[RECD] round 5/12 acc=0.4477 cov=0.441 succ=32/32 (223s)
+[RECD] round 10/12 acc=0.4889 cov=0.610 succ=36/36 (236s)
+
+===== Geographic starvation (left mod-0) + tight budget, HAR, 3 seeds =====
+condition                 acc_all  acc_starved   ±sd   jain firstRecv    cov
+Mobility-Greedy (ref)        48.1         29.8   2.1  0.693      3.31   0.67
+RECD Gamma-off (nu0)         48.3         29.4   2.7  0.642      3.78   0.69
+RECD Markov per-seg          48.7         29.7   1.4  0.646      3.64   0.67
+RECD HierGAT (veh)           47.4         29.0   1.9  0.644      3.75   0.70
+(n_starved per run ~ 22.0)
+
+saved results/diag_geo.json

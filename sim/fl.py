@@ -13,6 +13,7 @@ one small CNN encoder per modality plus a local fusion head that averages
 available modality embeddings.
 """
 import copy
+import os
 import numpy as np
 import torch
 import torch.nn as nn
@@ -101,6 +102,218 @@ class Encoder1D(nn.Module):
         return F.relu(self.fc(x.flatten(1)))
 
 
+# ---------------------------------------------------------------- MM-Fi
+# Action recognition (27 classes) from three modalities used in the paper:
+#   r=0 skeleton (3D body keypoints), r=1 mmWave point cloud (BEV voxels),
+#   r=2 depth image. Preprocessed into per-window samples by sim/prep_mmfi.py.
+MMFI_KEYS = {0: "xsk", 1: "xmm", 2: "xdp"}
+MMFI_N_CLASS = 27
+
+
+class MultiModalArray:
+    """Indexable container of per-modality arrays sharing a sample axis.
+
+    Lets the FL pipeline treat heterogeneous-shaped modalities like a single
+    dataset: arr[idx] returns {r: tensor[idx]} so spec['views'] is a pass-through.
+    """
+
+    def __init__(self, mods):
+        self.mods = mods  # {r: np.ndarray [N, ...]}
+        self._n = len(next(iter(mods.values())))
+
+    def __len__(self):
+        return self._n
+
+    def __getitem__(self, idx):
+        return {r: torch.as_tensor(arr[idx]) for r, arr in self.mods.items()}
+
+
+def mmfi_views(x):
+    """x is already the {r: tensor} dict from MultiModalArray.__getitem__."""
+    return x
+
+
+def load_mmfi(cache="results/data/mmfi_cache.npz"):
+    """Load preprocessed MM-Fi cache -> (train container, ytr, subj_tr,
+    test container, yte). Test split = subjects with id % 5 == 0 held out."""
+    d = np.load(cache)
+    present = [r for r, k in MMFI_KEYS.items() if k in d]
+    y = torch.tensor(d["y"]).long()
+    subj = d["subj"]
+    mods = {r: d[MMFI_KEYS[r]] for r in present}
+    te_mask = (subj % 5 == 0)
+    tr_mask = ~te_mask
+    tr = MultiModalArray({r: mods[r][tr_mask] for r in present})
+    te = MultiModalArray({r: mods[r][te_mask] for r in present})
+    return tr, y[tr_mask], subj[tr_mask], te, y[te_mask], present
+
+
+def partition_mmfi(subj_tr, n_veh, seed):
+    """Subject-based non-IID partition (same idea as UCI HAR)."""
+    rng = np.random.RandomState(seed)
+    subjects = np.unique(subj_tr)
+    shards = []
+    per = int(np.ceil(n_veh / len(subjects)))
+    for s in subjects:
+        idx = np.where(subj_tr == s)[0]
+        rng.shuffle(idx)
+        shards.extend(np.array_split(idx, per))
+    rng.shuffle(shards)
+    return [shards[i % len(shards)] for i in range(n_veh)]
+
+
+class SkeletonEnc(nn.Module):
+    """1D-CNN over skeleton channels-over-time [B,51,T]."""
+
+    def __init__(self, in_ch=51):
+        super().__init__()
+        self.conv1 = nn.Conv1d(in_ch, 64, 5, padding=2)
+        self.conv2 = nn.Conv1d(64, 64, 3, padding=1)
+        self.fc = nn.Linear(64 * 4, EMB_DIM)
+
+    def forward(self, x):
+        x = F.max_pool1d(F.relu(self.conv1(x)), 2)
+        x = F.max_pool1d(F.relu(self.conv2(x)), 2)
+        return F.relu(self.fc(x.flatten(1)))
+
+
+class MmwaveEnc(nn.Module):
+    """2D-CNN over mmWave BEV voxel grid [B,2,32,32]."""
+
+    def __init__(self, in_ch=2):
+        super().__init__()
+        self.conv1 = nn.Conv2d(in_ch, 16, 3, padding=1)
+        self.conv2 = nn.Conv2d(16, 32, 3, padding=1)
+        self.fc = nn.Linear(32 * 8 * 8, EMB_DIM)
+
+    def forward(self, x):
+        x = F.max_pool2d(F.relu(self.conv1(x)), 2)
+        x = F.max_pool2d(F.relu(self.conv2(x)), 2)
+        return F.relu(self.fc(x.flatten(1)))
+
+
+class DepthEnc(nn.Module):
+    """2D-CNN over depth image [B,1,112,112]."""
+
+    def __init__(self, in_ch=1):
+        super().__init__()
+        self.conv1 = nn.Conv2d(in_ch, 8, 3, padding=1)
+        self.conv2 = nn.Conv2d(8, 16, 3, padding=1)
+        self.conv3 = nn.Conv2d(16, 32, 3, padding=1)
+        self.fc = nn.Linear(32 * 14 * 14, EMB_DIM)
+
+    def forward(self, x):
+        x = F.max_pool2d(F.relu(self.conv1(x)), 2)
+        x = F.max_pool2d(F.relu(self.conv2(x)), 2)
+        x = F.max_pool2d(F.relu(self.conv3(x)), 2)
+        return F.relu(self.fc(x.flatten(1)))
+
+
+def _mmfi_enc(r):
+    return {0: SkeletonEnc, 1: MmwaveEnc, 2: DepthEnc}[r]()
+
+
+# ------------------------------------------------------------- Raymobtime
+# Vehicular multimodal mmWave BEAM SELECTION (the FLASH/ITU-ML5G task): predict
+# the best Tx-Rx beam pair from three vehicle sensors -- GPS coordinate, camera
+# image, LiDAR occupancy cube. This is the standard vehicular multimodal-FL
+# benchmark (Klautau et al.; Salehi et al. FLASH; Imperial federated beam sel.).
+RAYMOB_KEYS = {0: "coord", 1: "image", 2: "lidar"}
+
+
+def load_raymob(root="results/data/raymobtime/bs_baseline_data",
+                n_class=256, coarse=False):
+    """Load Raymobtime baseline npz -> (train container, ytr, region_tr,
+    test container, yte, present). Modalities pre-permuted to channel-first.
+
+    Label = best beam pair (argmax |gain| over the 8x32 codebook = 256 classes);
+    coarse=True collapses to the 8 Tx sectors. region = spatial bin of the GPS
+    coordinate, used for location-correlated non-IID partition across vehicles.
+    """
+    coord = np.load(os.path.join(root, "coord_input/coord_input.npz"))["coordinates"].astype(np.float32)
+    img = np.load(os.path.join(root, "image_input/img_input_20.npz"))["inputs"].astype(np.float32) / 255.0
+    lid = np.load(os.path.join(root, "lidar_input/lidar_input.npz"))["input"].astype(np.float32)
+    beam = np.load(os.path.join(root, "beam_output/beams_output.npz"))["output_classification"]
+    power = np.abs(beam).reshape(len(beam), -1)        # (N, 256)
+    y = (power.reshape(len(beam), 8, 32).max(2).argmax(1) if coarse
+         else power.argmax(1)).astype(np.int64)        # 8 or 256 classes
+    # channel-first layouts for torch convs
+    img = np.transpose(img, (0, 3, 1, 2))              # (N,1,48,81)
+    lid = np.transpose(lid, (0, 3, 1, 2))              # (N,10,20,200)
+    cmu, csd = coord.mean(0), coord.std(0) + 1e-6
+    coord = (coord - cmu) / csd
+    N = len(y)
+    # location-correlated regions (spatial bins on normalized coordinate)
+    region = (np.clip(((coord[:, 0] - coord[:, 0].min()) /
+                       (np.ptp(coord[:, 0]) + 1e-9) * 50).astype(int), 0, 49))
+    rng = np.random.RandomState(0)
+    te_mask = rng.rand(N) < 0.2
+    tr_mask = ~te_mask
+    mods = {0: coord, 1: img, 2: lid}
+    tr = MultiModalArray({r: mods[r][tr_mask] for r in mods})
+    te = MultiModalArray({r: mods[r][te_mask] for r in mods})
+    return (tr, torch.tensor(y[tr_mask]), region[tr_mask],
+            te, torch.tensor(y[te_mask]), [0, 1, 2])
+
+
+def partition_raymob(region_tr, n_veh, seed):
+    """Location-correlated non-IID: contiguous spatial regions -> vehicles."""
+    rng = np.random.RandomState(seed)
+    order = np.argsort(region_tr, kind="stable")
+    shards = np.array_split(order, n_veh)
+    idx = list(range(n_veh))
+    rng.shuffle(idx)
+    return [shards[i] for i in idx]
+
+
+class CoordEnc(nn.Module):
+    """MLP over the 2-D GPS coordinate."""
+
+    def __init__(self):
+        super().__init__()
+        self.fc1 = nn.Linear(2, 64)
+        self.fc2 = nn.Linear(64, EMB_DIM)
+
+    def forward(self, x):
+        return F.relu(self.fc2(F.relu(self.fc1(x))))
+
+
+class ImageEnc(nn.Module):
+    """2D-CNN over the 48x81 grayscale image."""
+
+    def __init__(self, in_ch=1):
+        super().__init__()
+        self.conv1 = nn.Conv2d(in_ch, 16, 3, padding=1)
+        self.conv2 = nn.Conv2d(16, 32, 3, padding=1)
+        self.fc = nn.Linear(32 * 12 * 20, EMB_DIM)
+
+    def forward(self, x):
+        x = F.max_pool2d(F.relu(self.conv1(x)), 2)
+        x = F.max_pool2d(F.relu(self.conv2(x)), 2)
+        return F.relu(self.fc(x.flatten(1)))
+
+
+class LidarEnc(nn.Module):
+    """2D-CNN over the 10x20x200 LiDAR occupancy cube (10 channels)."""
+
+    def __init__(self, in_ch=10):
+        super().__init__()
+        self.conv1 = nn.Conv2d(in_ch, 16, 3, padding=1)
+        self.conv2 = nn.Conv2d(16, 32, 3, padding=1)
+        self.pool = nn.AdaptiveMaxPool2d((5, 25))
+        self.fc = nn.Linear(32 * 5 * 25, EMB_DIM)
+
+    def forward(self, x):
+        x = F.max_pool2d(F.relu(self.conv1(x)), 2)
+        x = F.relu(self.conv2(x))
+        x = self.pool(x)
+        return F.relu(self.fc(x.flatten(1)))
+
+
+def _raymob_enc(r):
+    return {0: CoordEnc, 1: ImageEnc, 2: LidarEnc}[r]()
+
+
 def load_fashion_mnist(root="results/data"):
     from torchvision import datasets, transforms
 
@@ -125,6 +338,9 @@ def modality_views(x):
 
 # sensor-noise std for complementary modalities; engine may override per run
 COMP_NOISE = 0.7
+# multiplier on the additive sensor noise for low-quality modalities; engine may
+# override per run (harsh-quality regime cranks it so the encoder genuinely fails)
+QUAL_NOISE = 0.8
 
 
 def complementary_views(x, noise=None):
@@ -147,7 +363,8 @@ def complementary_views(x, noise=None):
 
 
 def partition(y_train, n_veh, seed, dirichlet=0.5, size_lognorm=0.6,
-              mean_size=420, p_mod=0.72, q_low_frac=0.35, starve_frac=0.0):
+              mean_size=420, p_mod=0.72, q_low_frac=0.35, starve_frac=0.0,
+              starve_ids=None, starve_mod=None, q_low_range=(0.25, 0.55)):
     """Non-IID Dirichlet partition with heterogeneous sizes/modalities/quality.
 
     Returns per-vehicle: sample indices, modality set, per-modality kept
@@ -175,8 +392,9 @@ def partition(y_train, n_veh, seed, dirichlet=0.5, size_lognorm=0.6,
             ptr[c] = (ptr[c] + k) % max(len(by_class[c]) - 1, 1)
         veh_idx.append(np.array(idx))
 
-    mods, mod_frac, quality = assign_heterogeneity(n_veh, rng, p_mod,
-                                                   q_low_frac, starve_frac)
+    mods, mod_frac, quality = assign_heterogeneity(
+        n_veh, rng, p_mod, q_low_frac, starve_frac,
+        starve_ids=starve_ids, starve_mod=starve_mod, q_low_range=q_low_range)
     return veh_idx, mods, mod_frac, quality
 
 
@@ -187,18 +405,22 @@ STARVE_FRAC_SENTINEL = 0.003
 
 
 def assign_heterogeneity(n_veh, rng, p_mod=0.72, q_low_frac=0.35,
-                         starve_frac=0.0):
+                         starve_frac=0.0, starve_ids=None, starve_mod=None,
+                         universe=None, q_low_range=(0.25, 0.55)):
     """Random modality subsets, per-modality availability, sensing quality.
 
     If starve_frac > 0, that fraction of vehicles is made data-starved: one of
     their owned modalities is given near-zero data and low sensing quality, so
     a useful encoder for that modality can only come from V2V dissemination.
+    `universe` restricts the modality set (e.g. only modalities present in the
+    dataset cache); defaults to all N_MOD modalities.
     """
+    univ = list(range(N_MOD)) if universe is None else list(universe)
     mods, mod_frac, quality = [], [], []
     for i in range(n_veh):
-        m = [r for r in range(N_MOD) if rng.rand() < p_mod]
+        m = [r for r in univ if rng.rand() < p_mod]
         if not m:
-            m = [int(rng.randint(N_MOD))]
+            m = [int(rng.choice(univ))]
         mods.append(sorted(m))
         # per-modality data availability (some vehicles have very little
         # data for one of their modalities -> high learning need)
@@ -207,17 +429,26 @@ def assign_heterogeneity(n_veh, rng, p_mod=0.72, q_low_frac=0.35,
         # quality: a fraction of drives are "night/rain" with degraded sensing
         q = {}
         for r in m:
-            q[r] = float(rng.uniform(0.25, 0.55)) if rng.rand() < q_low_frac \
+            q[r] = float(rng.uniform(*q_low_range)) if rng.rand() < q_low_frac \
                 else float(rng.uniform(0.8, 1.0))
         quality.append(q)
 
-    n_starve = int(round(starve_frac * n_veh))
-    if n_starve > 0:
-        victims = rng.choice(n_veh, size=min(n_starve, n_veh), replace=False)
-        for i in victims:
-            r = int(rng.choice(mods[i]))  # starve one owned modality
-            mod_frac[i][r] = STARVE_FRAC_SENTINEL
-            quality[i][r] = float(rng.uniform(0.25, 0.4))
+    if starve_ids is not None:
+        victims = list(starve_ids)           # location-correlated starvation
+    else:
+        n_starve = int(round(starve_frac * n_veh))
+        victims = (rng.choice(n_veh, size=min(n_starve, n_veh), replace=False)
+                   if n_starve > 0 else [])
+    for i in victims:
+        owned = mods[i]
+        if starve_mod is not None:
+            if starve_mod not in owned:
+                continue                     # victim lacks the target modality
+            r = starve_mod
+        else:
+            r = int(rng.choice(owned))       # starve one owned modality
+        mod_frac[i][r] = STARVE_FRAC_SENTINEL
+        quality[i][r] = float(rng.uniform(0.25, 0.4))
     return mods, mod_frac, quality
 
 
@@ -290,6 +521,9 @@ SPECS = {
                     "enc": lambda r: Encoder(ENC_SHAPES_COMP[r]),
                     "n_class": 10},
     "har": {"views": har_views, "enc": lambda r: Encoder1D(), "n_class": 6},
+    "mmfi": {"views": mmfi_views, "enc": _mmfi_enc, "n_class": MMFI_N_CLASS},
+    "raymob": {"views": mmfi_views, "enc": _raymob_enc, "n_class": 256},
+    "raymob8": {"views": mmfi_views, "enc": _raymob_enc, "n_class": 8},
 }
 
 
@@ -324,7 +558,7 @@ class Vehicle:
             n_keep = min(max(int(len(idx) * mod_frac[r]), floor), len(idx))
             xv = views[r][:n_keep].clone()
             if quality[r] < 0.7:  # degraded sensing -> additive noise
-                xv += torch.randn_like(xv) * (0.8 * (1 - quality[r]))
+                xv += torch.randn_like(xv) * (QUAL_NOISE * (1 - quality[r]))
             self.data[r] = (xv, y[:n_keep].clone())
             self.D[r] = n_keep
         # joint samples shared by all modalities (prefix intersection)
@@ -434,3 +668,36 @@ class Vehicle:
         embs = {r: self.enc[r](xte_views[r].to(DEVICE)) for r in self.mods}
         pred = self.fusion(embs).argmax(1)
         return (pred == yte.to(DEVICE)).float().mean().item()
+
+    @torch.no_grad()
+    def _feats(self, r, xview, bs=256):
+        """Batched frozen-encoder features for modality r (N, EMB_DIM)."""
+        out = []
+        for s in range(0, len(xview), bs):
+            out.append(self.enc[r](xview[s:s + bs].to(DEVICE)))
+        return torch.cat(out)
+
+    def encoder_probe_acc(self, xtr_v, ytr, xte_v, yte, epochs=120, bs=256):
+        """Pure ENCODER quality per modality: freeze the encoder and fit a fresh
+        linear probe on GLOBAL train features, then score on global test. This
+        isolates the representation from the fusion model and from the vehicle's
+        own (possibly 3-sample) aux head, so a useful encoder received over V2V
+        shows up even when the fused accuracy does not."""
+        ytr_d, yte_d = ytr.to(DEVICE), yte.to(DEVICE)
+        out = {}
+        for r in self.mods:
+            ftr = self._feats(r, xtr_v[r], bs).detach()
+            fte = self._feats(r, xte_v[r], bs).detach()
+            probe = nn.Linear(EMB_DIM, self.spec["n_class"]).to(DEVICE)
+            opt = torch.optim.Adam(probe.parameters(), lr=0.01)
+            for _ in range(epochs):
+                sel = torch.randint(0, len(ftr), (min(512, len(ftr)),),
+                                    device=DEVICE)
+                opt.zero_grad()
+                loss = F.cross_entropy(probe(ftr[sel]), ytr_d[sel])
+                loss.backward()
+                opt.step()
+            with torch.no_grad():
+                acc = (probe(fte).argmax(1) == yte_d).float().mean().item()
+            out[r] = acc
+        return out

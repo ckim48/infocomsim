@@ -32,10 +32,15 @@ class CacheEntry:
 
 
 def need_weight(veh, r, eps=1e-3):
-    """alpha_need, Eq. (29)."""
+    """alpha_need, Eq. (29): 1/(D_{i,r} * Q^loc_{i,r}) normalised over modalities.
+
+    Quality-aware: a vehicle with a degraded sensor (low Q) for r has high
+    learning need for r even when it holds plenty of (noisy) data, so RECD
+    targets quality-needy vehicles -- not just quantity-poor ones."""
     if r not in veh.D:
         return 0.0
-    inv = {rr: 1.0 / (veh.D[rr] + eps) for rr in veh.mods}
+    inv = {rr: 1.0 / (veh.D[rr] * veh.quality.get(rr, 1.0) + eps)
+           for rr in veh.mods}
     return inv[r] / sum(inv.values())
 
 
@@ -94,8 +99,27 @@ class RECD(MethodBase):
         self.phi = cfg.get("phi", 0.08)
         self.eps_rate = cfg.get("eps_rate", 0.15)
         self.Ebar = cfg.get("Ebar", 3.0)  # J per round budget
+        # need-aware dissemination (default off): scale the road-reachability
+        # dissemination term by per-modality global unmet need, so a relay is
+        # valued for spreading toward vehicles that still NEED the modality,
+        # not merely for reaching well-connected road segments.
+        self.need_dissem = cfg.get("need_dissem", False)
+        self._Sr = None
         self.Y = None
         self.Z = None
+
+    def _scarcity(self, vehicles):
+        """Per-modality global unmet need S_r in [0,1] (max-normalized).
+
+        S_r aggregates how weakly equipped the network is for modality r:
+        sum of receiver learning-need over all vehicles owning r. Static from
+        round 0 (no queue warm-up needed); higher = more vehicles need r.
+        """
+        Sr = np.zeros(N_MOD)
+        for v in vehicles:
+            for r in v.mods:
+                Sr[r] += need_weight(v, r)
+        return Sr / (Sr.max() + 1e-9)
 
     def decide(self, ctx):
         N = ctx["N"]
@@ -109,6 +133,11 @@ class RECD(MethodBase):
         # vehicle-specific predicted reachability Gamma_j (hierarchical GAT)
         Gam = np.asarray(ctx["gam_veh"], dtype=float)
         Gn = Gam / (Gam.max() + 1e-9)
+
+        # per-modality global unmet need for need-aware dissemination (Sec.: the
+        # refined dual objective values relays that spread toward NEEDY vehicles)
+        self._Sr = self._scarcity(vehicles) if self.need_dissem \
+            else np.ones(N_MOD)
 
         # Stage 2 (sender-side max-weight matching, Sec. III-C)
         txs = []
@@ -134,7 +163,8 @@ class RECD(MethodBase):
                         learn = (need_weight(veh_j, r)
                                  * reliability(veh_j, r, D, Q)
                                  * np.exp(-self.phi * dl))
-                    w = (self.V * (learn + self.nu * ptx * Gn[j])
+                    dis = self.nu * ptx * Gn[j] * self._Sr[r]
+                    w = (self.V * (learn + dis)
                          + self.Y[j, r] * (1.0 if r in veh_j.mods else 0.0)
                          - self.Z[i] * prm.P_watt * Ttx1)
                     if w > 0:
@@ -172,7 +202,8 @@ class RECD(MethodBase):
             if r in veh.mods:
                 learn = (need_weight(veh, r) * reliability(veh, r, ent.D, ent.Q)
                          * np.exp(-self.phi * dl))
-            value = learn + self.nu * (g / gmax) * np.exp(-self.phi * dl)
+            sr = self._Sr[r] if self._Sr is not None else 1.0
+            value = learn + self.nu * (g / gmax) * sr * np.exp(-self.phi * dl)
             scored.append((value / ENC_BITS[r], value, key))
         scored.sort(key=lambda x: -x[0])
         keep, used = set(), 0.0
@@ -322,9 +353,24 @@ class MobilityGreedy(MethodBase):
         return keep
 
 
+class Local(MethodBase):
+    """No V2V sharing at all (pure local training). Control group that isolates
+    whether encoder dissemination helps: any encoder-quality gain of the other
+    methods over Local is attributable to sharing."""
+    name = "Local"
+    uses_cache = False
+
+    def decide(self, ctx):
+        return []
+
+    def select_cache(self, veh_id, ctx, candidates, capacity_bits):
+        return set()
+
+
 METHODS = {
     "RECD": RECD,
     "DFL-Gossip": DFLGossip,
     "LRU-Random": LRURandom,
     "Mobility-Greedy": MobilityGreedy,
+    "Local": Local,
 }

@@ -1,0 +1,81 @@
+
+=== Mobility-Greedy (ref) seed=1 ===
+[Mobility-Greedy] round 1/15 acc=0.2386 cov=0.465 succ=71/71 (5s)
+[Mobility-Greedy] round 5/15 acc=0.4646 cov=0.713 succ=60/60 (13s)
+[Mobility-Greedy] round 10/15 acc=0.5135 cov=0.899 succ=67/68 (25s)
+[Mobility-Greedy] round 15/15 acc=0.5337 cov=0.946 succ=49/51 (37s)
+
+=== Mobility-Greedy (ref) seed=2 ===
+[Mobility-Greedy] round 1/15 acc=0.2538 cov=0.358 succ=66/66 (4s)
+[Mobility-Greedy] round 5/15 acc=0.4758 cov=0.619 succ=57/57 (13s)
+[Mobility-Greedy] round 10/15 acc=0.5429 cov=0.828 succ=69/72 (25s)
+[Mobility-Greedy] round 15/15 acc=0.5533 cov=0.918 succ=54/56 (37s)
+
+=== Mobility-Greedy (ref) seed=3 ===
+[Mobility-Greedy] round 1/15 acc=0.2394 cov=0.412 succ=70/70 (4s)
+[Mobility-Greedy] round 5/15 acc=0.4963 cov=0.654 succ=57/57 (15s)
+[Mobility-Greedy] round 10/15 acc=0.5478 cov=0.816 succ=71/74 (27s)
+[Mobility-Greedy] round 15/15 acc=0.5623 cov=0.919 succ=58/59 (40s)
+
+=== RECD Gamma-off (nu0) seed=1 ===
+[RECD] round 1/15 acc=0.2442 cov=0.202 succ=31/33 (3s)
+[RECD] round 5/15 acc=0.4718 cov=0.651 succ=40/43 (14s)
+[RECD] round 10/15 acc=0.5117 cov=0.822 succ=53/54 (26s)
+[RECD] round 15/15 acc=0.5227 cov=0.915 succ=30/32 (39s)
+
+=== RECD Gamma-off (nu0) seed=2 ===
+[RECD] round 1/15 acc=0.2307 cov=0.224 succ=37/38 (4s)
+[RECD] round 5/15 acc=0.4722 cov=0.612 succ=41/45 (15s)
+[RECD] round 10/15 acc=0.5257 cov=0.799 succ=61/62 (28s)
+[RECD] round 15/15 acc=0.5497 cov=0.851 succ=38/41 (41s)
+
+=== RECD Gamma-off (nu0) seed=3 ===
+[RECD] round 1/15 acc=0.2478 cov=0.221 succ=36/38 (4s)
+[RECD] round 5/15 acc=0.4968 cov=0.596 succ=40/43 (15s)
+[RECD] round 10/15 acc=0.5573 cov=0.757 succ=57/57 (29s)
+[RECD] round 15/15 acc=0.5697 cov=0.853 succ=40/40 (42s)
+
+=== RECD Markov per-seg seed=1 ===
+[RECD] round 1/15 acc=0.2395 cov=0.209 succ=36/37 (4s)
+[RECD] round 5/15 acc=0.4635 cov=0.659 succ=46/50 (13s)
+[RECD] round 10/15 acc=0.5281 cov=0.829 succ=64/66 (26s)
+[RECD] round 15/15 acc=0.5332 cov=0.922 succ=42/43 (39s)
+
+=== RECD Markov per-seg seed=2 ===
+[RECD] round 1/15 acc=0.2543 cov=0.231 succ=40/41 (4s)
+[RECD] round 5/15 acc=0.4718 cov=0.604 succ=47/51 (15s)
+[RECD] round 10/15 acc=0.5322 cov=0.806 succ=65/66 (29s)
+[RECD] round 15/15 acc=0.5463 cov=0.843 succ=43/46 (42s)
+
+=== RECD Markov per-seg seed=3 ===
+[RECD] round 1/15 acc=0.2482 cov=0.221 succ=40/41 (4s)
+[RECD] round 5/15 acc=0.5013 cov=0.596 succ=49/52 (14s)
+[RECD] round 10/15 acc=0.5522 cov=0.779 succ=62/63 (27s)
+[RECD] round 15/15 acc=0.5642 cov=0.860 succ=46/46 (41s)
+
+=== RECD HierGAT (veh) seed=1 ===
+[RECD] round 1/15 acc=0.2326 cov=0.209 succ=35/36 (214s)
+[RECD] round 5/15 acc=0.4781 cov=0.667 succ=48/51 (224s)
+[RECD] round 10/15 acc=0.5150 cov=0.822 succ=64/66 (235s)
+[RECD] round 15/15 acc=0.5250 cov=0.907 succ=42/43 (247s)
+
+=== RECD HierGAT (veh) seed=2 ===
+[RECD] round 1/15 acc=0.2674 cov=0.231 succ=39/40 (218s)
+[RECD] round 5/15 acc=0.4748 cov=0.627 succ=48/51 (228s)
+[RECD] round 10/15 acc=0.5159 cov=0.799 succ=66/67 (240s)
+[RECD] round 15/15 acc=0.5462 cov=0.866 succ=44/47 (251s)
+
+=== RECD HierGAT (veh) seed=3 ===
+[RECD] round 1/15 acc=0.2385 cov=0.221 succ=39/40 (213s)
+[RECD] round 5/15 acc=0.5018 cov=0.581 succ=49/51 (223s)
+[RECD] round 10/15 acc=0.5565 cov=0.779 succ=61/62 (237s)
+[RECD] round 15/15 acc=0.5719 cov=0.868 succ=46/46 (251s)
+
+===== HierGAT vs Markov vs Gamma-off (HAR sparse, starve20%, 3 seeds) =====
+condition                 acc_all  acc_starved   ±sd   jain firstRecv    cov
+Mobility-Greedy (ref)        55.0         30.7   3.0  0.759      3.03   0.93
+RECD Gamma-off (nu0)         54.7         30.4   0.3  0.690      3.54   0.87
+RECD Markov per-seg          54.8         30.2   1.1  0.688      3.49   0.88
+RECD HierGAT (veh)           54.8         30.2   0.3  0.694      3.53   0.88
+
+saved results/diag_hiergat.json

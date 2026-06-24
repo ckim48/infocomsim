@@ -1,0 +1,7 @@
+82 jobs, 6 workers
+[16:50:03] main_DFL-Gossip_med_n60_s1__1 rc=0 (570s)
+[16:50:06] main_RECD_med_n60_s1__1 rc=0 (573s)
+[16:50:20] main_DFL-Gossip_med_n60_s2__2 rc=0 (587s)
+[16:50:25] main_DFL-Gossip_med_n60_s3__3 rc=0 (592s)
+[16:50:26] main_RECD_med_n60_s2__2 rc=0 (592s)
+[16:50:29] main_RECD_med_n60_s3__3 rc=0 (596s)

@@ -1,0 +1,9 @@
+map-matching cab fixes in window ...
+  428 cabs, 21715 matched fixes, 54s
+transitions: train 9804 | test 6537
+
+===== FAIR fix-level prediction (real SF taxi, no interpolation) =====
+predictor                            top-1  branching
+Empirical prior P(next|cur)           19.0       18.8   (n=2752,2743)
+Context model (head+hist+cab)          9.0        8.9   (n=2752,2743)
+saved results/eval_fixpred.json
